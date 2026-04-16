@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmberCay轰趴馆 | 派对专家</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        /* 简化后的样式 */
+        :root {
+            --primary: #FF5252;
+            --secondary: #FFD740;
+            --light: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+
+        body {
+            background: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 头部样式 */
+        header {
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        /* 主要区域 */
+        .main-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1532635241-17e820acc59f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 0 40px;
+            text-align: center;
+            color: white;
+        }
+
+        .main-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .main-content p {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            margin: 10px;
+            border: 2px solid var(--primary);
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: transparent;
+            transform: scale(1.05);
+        }
+
+        /* 服务介绍 */
+        .services {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: #f5f5f5;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* 联系方式 */
+        .contact {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary) 0%, #ff8a80 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .contact-info {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 20px;
+        }
+
+        .phone {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 20px 0;
+            display: block;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .main-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .main-content p {
+                font-size: 1.1rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 网站头部 -->
+    <header>
+        <div class="container">
+            <div class="logo">Ember<span>Cay</span>轰趴馆</div>
+        </div>
+    </header>
+
+    <!-- 主展示区 -->
+    <section class="main-section">
+        <div class="container">
+            <div class="main-content">
+                <h1>专业派对场地</h1>
+                <p>生日聚会 · 公司团建 · 朋友聚餐 · 主题派对</p>
+                <p>提供一站式派对解决方案，让您的聚会更精彩！</p>
+                <div>
+                    <a href="#contact" class="btn">立即预约</a>
+                    <a href="#services" class="btn"
+                        style="background: var(--secondary); border-color: var(--secondary); color: #333;">了解详情</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服务介绍 -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>我们的特色服务</h2>
+                <p>专业场地，丰富设施，完美派对体验</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <h3>专业KTV包厢</h3>
+                    <p>顶级音响设备，海量歌曲库，专业隔音设计，尽情欢唱</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3>娱乐游戏区</h3>
+                    <p>PS5、Switch、桌游、麻将等多种娱乐设施</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>自助餐饮区</h3>
+                    <p>专业厨房设施，可自带食材或选择餐饮套餐</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>高清投影设备</h3>
+                    <p>支持电影放映、游戏投屏、会议展示</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-couch"></i>
+                    </div>
+                    <h3>舒适休息区</h3>
+                    <p>沙发、榻榻米、休息室，满足不同需求</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3>主题派对策划</h3>
+                    <p>生日派对、求婚惊喜、节日主题等定制服务</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系方式 -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>预约咨询</h2>
+                <p>随时联系我们，预定您的专属派对</p>
+            </div>
+            <div class="contact-info">
+                <p>营业时间：每日 10:00 - 次日 02:00</p>
+                <a href="tel:13888888888" class="phone">
+                    <i class="fas fa-phone"></i> 138-8888-8888
+                </a>
+                <p>地址：上海市浦东新区欢乐路88号</p>
+                <p>微信咨询：EmberCay-Party</p>
+
+                <div style="margin-top: 30px;">
+                    <a href="tel:13888888888" class="btn">电话预约</a>
+                    <a href="weixin://" class="btn" style="background: #09bb07; border-color: #09bb07;">
+                        <i class="fab fa-weixin"></i> 微信咨询
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer style="background: #333; color: #fff; text-align: center; padding: 30px 0;">
+        <div class="container">
+            <p>© 2023 EmberCay轰趴馆 版权所有</p>
+            <p>让每一次聚会都成为难忘的回忆</p>
+            <div style="margin-top: 20px;">
+                <a href="#" style="color: #fff; margin: 0 10px;"><i class="fab fa-weixin"></i></a>
+                <a href="#" style="color: #fff; margin: 0 10px;"><i class="fab fa-weibo"></i></a>
+                <a href="#" style="color: #fff; margin: 0 10px;"><i class="fab fa-douyin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动效果
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 微信咨询按钮提示
+        document.querySelector('[href="weixin://"]').addEventListener('click', function (e) {
+            e.preventDefault();
+            alert("请打开微信，搜索公众号：EmberCay-Party");
+        });
+    </script>
+</body>
+
+</html>

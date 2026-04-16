@@ -1,0 +1,76 @@
+/**
+ * 符号库组件样式
+ * @author Huameitang
+ * 这个文件定义了网站符号库区域的所有样式
+ * 包括符号动画、悬停效果、浮动动画等
+ * 采用3D变换和动画效果，营造动态视觉体验
+ */
+
+/* 梦境池 */
+.dream-pool {
+    background: rgba(15, 10, 25, 0.8);
+    border-radius: 2px;
+    padding: 80px 5%;
+    margin: 100px 0;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(100, 100, 200, 0.2);
+}
+
+.pool-title {
+    font-size: 3rem;
+    margin-bottom: 40px;
+    color: #d0b0ff;
+    text-align: center;
+    font-weight: 300;
+    letter-spacing: 2px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.dream-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+}
+
+.dream-item {
+    width: 120px;
+    height: 120px;
+    background: rgba(40, 30, 60, 0.6);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: #9a7fcc;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(150, 100, 200, 0.3);
+    /* 移除复杂的3D动画，改为静态展示 */
+}
+
+.dream-item:nth-child(2n) {
+    background: rgba(30, 40, 70, 0.6);
+    color: #7f9acc;
+    /* 移除动画延迟 */
+}
+
+.dream-item:nth-child(3n) {
+    background: rgba(50, 30, 70, 0.6);
+    color: #cc7f9a;
+    /* 移除动画延迟 */
+}
+
+/* 移除浮动动画关键帧，减少性能消耗 */
+
+.dream-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(100, 50, 200, 0.3);
+    z-index: 5;
+    /* 简化悬停效果，移除3D旋转 */
+}

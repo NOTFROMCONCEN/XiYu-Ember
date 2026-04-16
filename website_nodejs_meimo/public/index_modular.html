@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<!--
+    栖屿 Ember 轰趴馆 - 模块化主页面
+    @author Huameitang
+    这是网站的模块化主页面文件
+    采用组件化设计，将页面拆分为多个独立的模块
+    便于维护、扩展和团队协作开发
+    遵循SOLID原则，保持代码的可维护性和可扩展性
+-->
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>栖屿 Ember | 深藏不露的轰趴馆</title>
+
+    <!-- 外部字体和图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- 关键路径CSS - 优先加载 -->
+    <link rel="stylesheet" href="css/critical-path.css" media="all">
+
+    <!-- 模块化CSS样式文件 - 核心样式 -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- 性能优化合并CSS - 优先加载 -->
+    <link rel="stylesheet" href="css/combined-performance.css">
+
+    <!-- 组件CSS - 异步加载以减少阻塞 -->
+    <link rel="stylesheet" href="css/header.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="css/hero.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="css/cards.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="css/gallery.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="css/symbols.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="css/form.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="css/footer.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="css/archive-button.css" media="print" onload="this.media='all'">
+
+    <!-- Fallback for no-js -->
+    <noscript>
+        <link rel="stylesheet" href="css/header.css">
+        <link rel="stylesheet" href="css/hero.css">
+        <link rel="stylesheet" href="css/cards.css">
+        <link rel="stylesheet" href="css/gallery.css">
+        <link rel="stylesheet" href="css/symbols.css">
+        <link rel="stylesheet" href="css/form.css">
+        <link rel="stylesheet" href="css/footer.css">
+        <link rel="stylesheet" href="css/archive-button.css">
+    </noscript>
+
+    <!-- 资源预加载优化 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <!-- DNS预解析 -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+
+    <!-- 基本样式 -->
+    <style>
+        .loading {
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
+        }
+
+        .page-ready {
+            opacity: 1;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #ff6b6b, #4ecdc4);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease-out;
+            z-index: 1000;
+        }
+
+        .loading-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Noto Sans SC', sans-serif;
+            color: #fff;
+            font-size: 1.2em;
+            text-align: center;
+            z-index: 1000;
+        }
+    </style>
+</head>
+
+<body class="loading">
+    <!-- 加载提示 -->
+    <div class="progress-bar"></div>
+    <div class="loading-text">页面加载中...</div>
+
+    <!-- 背景效果元素 -->
+    <div class="vhs-overlay"></div>
+    <div class="noise"></div>
+    <div class="distortion"></div>
+
+    <!-- 主要内容区域 -->
+    <div id="header-component"></div>
+    <div id="hero-component"></div>
+    <div id="cards-component"></div>
+    <div id="gallery-component"></div>
+    <div id="symbols-component"></div>
+    <div id="form-component"></div>
+    <div id="about-component"></div>
+    <div id="footer-component"></div>
+
+    <!-- 全局灯箱模块 -->
+    <div id="gallery-lightbox" class="lightbox-overlay">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img class="lightbox-image" src="" alt="Enlarged view">
+            <a href="#" class="lightbox-download" download>
+                <i class="fas fa-download"></i> 下载图片
+            </a>
+        </div>
+    </div>
+
+    <!-- 性能和图片优化脚本 -->
+    <script src="js/performance-config.js"></script>
+    <script type="module" src="js/performance-optimizer.js"></script>
+    <script type="module" src="js/image-optimizer.js"></script>
+
+    <!-- 其他性能优化脚本 -->
+    <!-- <script src="js/resource-optimizer.js"></script> -->
+    <!-- <script src="js/performance-monitor.js"></script> -->
+
+    <!-- 模块化JS文件 -->
+    <script type="module">
+        // 性能优化初始化
+        const performanceConfig = window.PerformanceConfig.getPerformanceConfig();
+        window.PerformanceConfig.applyPerformanceOptimizations(performanceConfig);
+
+        // 确保在页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const startTime = performance.now();
+
+                // 动态导入初始化模块
+                const { pageInitializer } = await import('./js/initializer.js');
+                await pageInitializer.initialize();
+
+                // 移除加载状态
+                document.body.classList.remove('loading');
+                document.body.classList.add('page-ready');
+
+                // 隐藏加载提示
+                setTimeout(() => {
+                    const loadingText = document.querySelector('.loading-text');
+                    if (loadingText) {
+                        loadingText.style.display = 'none';
+                    }
+                }, 500);
+
+                // 记录页面加载性能
+                const loadTime = performance.now() - startTime;
+                console.log(`页面初始化完成，耗时: ${loadTime.toFixed(2)}ms`);
+
+                // 启动资源优化器的懒加载观察
+                if (window.resourceOptimizer) {
+                    window.resourceOptimizer.observeLazyImages();
+                }
+
+            } catch (error) {
+                console.error('页面初始化失败:', error);
+                const loadingText = document.querySelector('.loading-text');
+                if (loadingText) {
+                    loadingText.textContent = '加载失败，请刷新页面重试';
+                }
+            }
+        });
+
+        // 页面可见性变化监听（用于性能优化）
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                console.log('页面隐藏，暂停非关键操作');
+            } else {
+                console.log('页面显示，恢复操作');
+            }
+        });
+    </script>
+</body>
+
+</html>

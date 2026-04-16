@@ -1,0 +1,35 @@
+<!-- 档案馆按钮组件 -->
+<div id="archive-button">
+    <div class="archive-button-container">
+        <script type="module">
+            import LiquidGlass from 'liquid-glass-react';
+            import React from 'react';
+            import ReactDOM from 'react-dom';
+
+            function ArchiveButton() {
+                return (
+                    <LiquidGlass
+                        displacementScale={64}
+                        blurAmount={0.1}
+                        saturation={130}
+                        aberrationIntensity={2}
+                        elasticity={0.35}
+                        cornerRadius={100}
+                        padding="12px 24px"
+                        onClick={() => window.location.href = 'danganlib/danganlib.html'}
+                    >
+                        <div class="button-content">
+                            <span class="button-text">进入档案馆</span>
+                            <i class="fas fa-archive"></i>
+                        </div>
+                    </LiquidGlass>
+                );
+            }
+
+            ReactDOM.render(
+                <ArchiveButton />,
+                document.getElementById('archive-button')
+            );
+        </script>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+/**
+ * 表单组件样式
+ * @author Huameitang
+ * 这个文件定义了网站表单区域的所有样式
+ * 包括表单布局、输入框样式、按钮效果等
+ * 采用现代化表单设计，提供良好的用户体验
+ */
+
+/* 预约表单区块 */
+.booking-section {
+    background: rgba(15, 10, 25, 0.8);
+    padding: 100px 5%;
+    margin: 100px 0;
+    border-top: 1px solid rgba(100, 100, 200, 0.2);
+    border-bottom: 1px solid rgba(100, 100, 200, 0.2);
+}
+
+.booking-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(20, 15, 35, 0.6);
+    padding: 40px;
+    border-radius: 2px;
+    border: 1px solid rgba(100, 100, 200, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #d0b0ff;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(10, 8, 20, 0.7);
+    border: 1px solid rgba(100, 100, 200, 0.3);
+    border-radius: 2px;
+    color: #d8d8e6;
+    font-family: 'Noto Sans SC', sans-serif;
+    transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #9a7fcc;
+    box-shadow: 0 0 10px rgba(154, 127, 204, 0.3);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: rgba(40, 30, 60, 0.8);
+    color: #d0b0ff;
+    border: 1px solid rgba(150, 100, 200, 0.5);
+    border-radius: 2px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.4s;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.submit-btn:hover {
+    background: rgba(60, 40, 100, 0.9);
+    box-shadow: 0 5px 15px rgba(100, 50, 200, 0.4);
+}
