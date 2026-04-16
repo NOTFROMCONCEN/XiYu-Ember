@@ -1,0 +1,256 @@
+/**
+ * 栖屿 Ember 轰趴馆 - 主样式文件
+ * @author Huameitang
+ * 这个文件包含了网站的全局样式定义，包括基础样式、布局、动画效果等
+ * 采用模块化设计，便于维护和扩展
+ * 遵循SOLID原则，保持样式的单一职责和开放封闭原则
+ */
+
+/* 全局基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans SC', 'Courier New', monospace;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    /* 防止水平滚动条 */
+}
+
+body {
+    background: #0a0a12;
+    color: #d8d8e6;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+    line-height: 1.6;
+}
+
+/* 确保所有容器不会超出视口宽度 */
+body>* {
+    max-width: 100vw;
+    box-sizing: border-box;
+}
+
+/* 修复可能的绝对定位元素导致的滚动问题 */
+.vhs-overlay,
+.noise,
+.distortion {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* 优化的VHS效果 - 减少复杂度提升性能 */
+.vhs-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        repeating-linear-gradient(0deg,
+            rgba(0, 0, 0, 0.05) 0px,
+            rgba(0, 0, 0, 0.05) 2px,
+            transparent 2px,
+            transparent 4px),
+        linear-gradient(rgba(20, 0, 30, 0.05), rgba(0, 20, 30, 0.05));
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.6;
+    /* 移除复杂动画以提升滚动性能 */
+    will-change: opacity;
+}
+
+/* 简化的VHS扭曲动画 - 仅在必要时触发 */
+@keyframes vhs-distortion {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(1px);
+    }
+}
+
+/* 优化的噪点效果 - 减少SVG复杂度 */
+.noise::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="50" height="50" filter="url(%23noise)" opacity="0.2"/></svg>');
+    opacity: 0.2;
+    pointer-events: none;
+    z-index: 1;
+    /* 添加性能优化属性 */
+    will-change: auto;
+}
+
+/* 优化的扭曲效果 - 减少动画复杂度 */
+.distortion {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(100, 0, 200, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 70% 70%, rgba(0, 200, 150, 0.05) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 2;
+    /* 移除持续动画，改为JavaScript控制 */
+    will-change: transform;
+    transition: transform 0.3s ease-out;
+}
+
+/* 保留动画定义，但不自动播放 */
+@keyframes distortion-wave {
+
+    0%,
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    50% {
+        transform: scale(1.02) rotate(0.5deg);
+    }
+}
+
+/* 悬浮按钮样式 */
+.floating-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ff00ff;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.floating-btn:hover {
+    background-color: #cc00cc;
+    transform: scale(1.1);
+}
+
+/* 对话框样式 */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1001; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+    color: #fff;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-buttons {
+    margin-top: 20px;
+}
+
+.modal-btn {
+    background-color: #ff00ff;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.modal-btn:hover {
+    background-color: #cc00cc;
+}
+
+
+/* 媒体查询：响应式设计 */
+@media (max-width: 1024px) {
+    .dream-title {
+        font-size: 4rem;
+    }
+
+    .subtitle {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .logo {
+        font-size: 2rem;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .dream-title {
+        font-size: 3rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .dream-btn {
+        padding: 15px 30px;
+        font-size: 1.2rem;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+    }
+
+    .dream-pool {
+        padding: 40px;
+    }
+}

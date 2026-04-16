@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<!--
+    关于页面
+    @author Huameitang
+    这是展示栖屿 Ember 轰趴馆详细信息的独立页面
+    包含场馆介绍、服务理念、设施设备、联系方式等完整信息
+    采用现代化设计风格，突出品牌特色和专业形象
+-->
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 | 栖屿 Ember</title>
+
+    <!-- 外部字体和图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+
+    <style>
+        /* 关于页面专用样式 */
+        .about-container {
+            max-width: 1200px;
+            margin: 120px auto 60px;
+            padding: 0 20px;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .about-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5em;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(255, 107, 107, 0.6);
+        }
+
+        .about-subtitle {
+            font-family: 'Noto Sans SC', sans-serif;
+            color: #b0b0b0;
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .about-sections {
+            display: grid;
+            gap: 60px;
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #ff6b6b);
+            background-size: 200% 100%;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2em;
+            color: #4ecdc4;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title i {
+            font-size: 1.2em;
+        }
+
+        .section-content {
+            font-family: 'Noto Sans SC', sans-serif;
+            color: #e0e0e0;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5em;
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .feature-title {
+            font-family: 'Orbitron', monospace;
+            color: #fff;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .feature-desc {
+            font-family: 'Noto Sans SC', sans-serif;
+            color: #b0b0b0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5em;
+            color: #ff6b6b;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-family: 'Noto Sans SC', sans-serif;
+            color: #4ecdc4;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-3px);
+        }
+
+        .contact-icon {
+            font-size: 2em;
+            color: #4ecdc4;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .contact-title {
+            font-family: 'Orbitron', monospace;
+            color: #fff;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            font-family: 'Noto Sans SC', sans-serif;
+            color: #b0b0b0;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .contact-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: #ff6b6b;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Noto Sans SC', sans-serif;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2em;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .cta-desc {
+            font-family: 'Noto Sans SC', sans-serif;
+            color: #b0b0b0;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1em;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cta-btn.primary {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            color: #fff;
+        }
+
+        .cta-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .about-container {
+                margin: 100px 20px 40px;
+            }
+
+            .about-title {
+                font-size: 2.5em;
+            }
+
+            .section-card {
+                padding: 30px 20px;
+            }
+
+            .section-title {
+                font-size: 1.6em;
+            }
+
+            .features-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 背景效果元素 -->
+    <div class="vhs-overlay"></div>
+    <div class="noise"></div>
+    <div class="distortion"></div>
+
+    <!-- 返回按钮 -->
+    <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+        返回首页
+    </a>
+
+    <!-- 关于页面内容 -->
+    <div class="about-container">
+        <div class="about-header">
+            <h1 class="about-title">关于栖屿 Ember</h1>
+            <p class="about-subtitle">
+                深藏不露的轰趴馆，一个专为追求独特体验的你而打造的私密空间。
+                在这里，每一次聚会都是一场精心编排的美好回忆。
+            </p>
+        </div>
+
+        <div class="about-sections">
+            <!-- 品牌故事 -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    <i class="fas fa-book-open"></i>
+                    品牌故事
+                </h2>
+                <div class="section-content">
+                    栖屿 Ember 诞生于对美好生活的向往和对完美聚会的执着追求。我们相信，每一次相聚都应该是独一无二的体验，
+                    每一个瞬间都值得被精心雕琢。从选址到装修，从设备到服务，我们倾注了无数的心血，
+                    只为给您和您的朋友们创造一个真正属于你们的专属空间。
+                    <br><br>
+                    "栖屿"寓意着心灵的栖息之地，"Ember"代表着永不熄灭的热情火花。
+                    我们希望这里不仅仅是一个聚会场所，更是一个能够点燃友谊、爱情、梦想的温暖港湾。
+                    在这个快节奏的时代，我们为您提供一个可以放慢脚步、享受当下的美好空间。
+                </div>
+            </div>
+
+            <!-- 服务理念 -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    <i class="fas fa-heart"></i>
+                    服务理念
+                </h2>
+                <div class="section-content">
+                    我们的服务理念建立在"用心、专业、创新"三大核心价值之上。我们深知每一次聚会对于客户的重要意义，
+                    因此我们承诺为每一位客户提供超越期待的个性化服务。
+                    <br><br>
+                    <strong>用心服务</strong> - 我们用心倾听每一位客户的需求，用心设计每一个活动细节，用心营造每一次难忘体验。<br>
+                    <strong>专业品质</strong> - 我们拥有专业的团队、先进的设备、完善的服务流程，确保每一次服务都达到最高标准。<br>
+                    <strong>持续创新</strong> - 我们不断探索新的服务模式、引入新的娱乐设备、开发新的主题活动，为客户带来惊喜。
+                </div>
+            </div>
+
+            <!-- 场馆设施 -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    <i class="fas fa-building"></i>
+                    场馆设施
+                </h2>
+                <div class="section-content">
+                    栖屿 Ember 拥有完善的现代化设施，为您的聚会提供全方位的支持。
+                    我们的空间设计融合了现代科技与温馨氛围，创造出独特的视觉和感官体验。
+                </div>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-music feature-icon"></i>
+                        <div class="feature-title">专业音响系统</div>
+                        <div class="feature-desc">顶级音响设备，支持多种音源接入，营造完美音效体验</div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-lightbulb feature-icon"></i>
+                        <div class="feature-title">智能灯光系统</div>
+                        <div class="feature-desc">可调节色彩和亮度的智能灯光，打造不同主题氛围</div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-tv feature-icon"></i>
+                        <div class="feature-title">大屏显示设备</div>
+                        <div class="feature-desc">高清大屏幕，支持投影、游戏、KTV等多种娱乐模式</div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-utensils feature-icon"></i>
+                        <div class="feature-title">餐饮服务区</div>
+                        <div class="feature-desc">完善的餐饮设施，提供定制化餐饮服务和饮品调制</div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-gamepad feature-icon"></i>
+                        <div class="feature-title">娱乐游戏设备</div>
+                        <div class="feature-desc">多种游戏设备和桌游，满足不同年龄段的娱乐需求</div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-camera feature-icon"></i>
+                        <div class="feature-title">拍照打卡区</div>
+                        <div class="feature-desc">精心设计的拍照背景，记录每一个美好瞬间</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据统计 -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    服务数据
+                </h2>
+                <div class="section-content">
+                    自开业以来，栖屿 Ember 已经为众多客户提供了优质的服务，
+                    我们用数据说话，用口碑证明我们的专业和用心。
+                </div>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <span class="stat-number">500+</span>
+                        <div class="stat-label">服务客户</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">1000+</span>
+                        <div class="stat-label">成功活动</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">98%</span>
+                        <div class="stat-label">客户满意度</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">50+</span>
+                        <div class="stat-label">主题套餐</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">24/7</span>
+                        <div class="stat-label">客服支持</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">3+</span>
+                        <div class="stat-label">运营年限</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 联系方式 -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    <i class="fas fa-phone"></i>
+                    联系我们
+                </h2>
+                <div class="section-content">
+                    我们随时准备为您提供咨询和服务，欢迎通过以下方式联系我们。
+                    我们的客服团队将在第一时间为您答疑解惑，为您的聚会提供专业建议。
+                </div>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <i class="fas fa-phone contact-icon"></i>
+                        <div class="contact-title">客服热线</div>
+                        <div class="contact-info">
+                            <a href="tel:400-123-4567" class="contact-link">400-123-4567</a><br>
+                            服务时间：9:00-22:00
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope contact-icon"></i>
+                        <div class="contact-title">邮箱联系</div>
+                        <div class="contact-info">
+                            <a href="mailto:hello@ember.com" class="contact-link">hello@ember.com</a><br>
+                            24小时内回复
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-weixin contact-icon"></i>
+                        <div class="contact-title">微信客服</div>
+                        <div class="contact-info">
+                            微信号：EmberParty<br>
+                            扫码添加客服
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt contact-icon"></i>
+                        <div class="contact-title">场馆地址</div>
+                        <div class="contact-info">
+                            上海市浦东新区<br>
+                            陆家嘴金融中心
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 行动号召区域 -->
+        <div class="cta-section">
+            <h2 class="cta-title">准备开始您的专属聚会了吗？</h2>
+            <p class="cta-desc">
+                立即预约，让我们为您打造一场难忘的聚会体验。
+                专业的服务团队已经准备就绪，期待为您服务。
+            </p>
+            <div class="cta-buttons">
+                <a href="#booking" class="cta-btn primary">
+                    <i class="fas fa-calendar-plus"></i>
+                    立即预约
+                </a>
+                <a href="profile.html" class="cta-btn secondary">
+                    <i class="fas fa-user"></i>
+                    了解馆主
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * 关于页面交互效果初始化函数
+         * @author Huameitang
+         * 
+         * 功能说明：
+         * 1. 实现页面滚动时的渐进式加载动画
+         * 2. 添加统计数字的计数动画效果
+         * 3. 优化用户交互体验
+         * 
+         * 实现方式：
+         * - 使用Intersection Observer API监听元素进入视口
+         * - 实现数字递增动画效果
+         * - 添加悬停和点击交互反馈
+         * 
+         * 设计原因：
+         * - 提升页面的视觉吸引力和用户体验
+         * - 增加页面的专业感和现代感
+         * - 通过动画效果突出重要信息
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            // 页面元素渐进加载动画
+            const cards = document.querySelectorAll('.section-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            // 初始化卡片动画
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(40px)';
+                card.style.transition = `opacity 0.8s ease ${index * 0.2}s, transform 0.8s ease ${index * 0.2}s`;
+                observer.observe(card);
+            });
+            
+            // 统计数字动画
+            const statNumbers = document.querySelectorAll('.stat-number');
+            let animationTriggered = false;
+            
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !animationTriggered) {
+                        animationTriggered = true;
+                        animateStats();
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            if (statNumbers.length > 0) {
+                statsObserver.observe(statNumbers[0].closest('.stats-container'));
+            }
+            
+            /**
+             * 统计数字动画函数
+             * @author Huameitang
+             * 
+             * 功能说明：为统计数字添加递增动画效果
+             * 实现方式：使用定时器逐步增加数字值
+             * 设计原因：增强数据展示的视觉冲击力
+             */
+            function animateStats() {
+                statNumbers.forEach(stat => {
+                    const finalValue = stat.textContent;
+                    const isPercentage = finalValue.includes('%');
+                    const hasPlus = finalValue.includes('+');
+                    const isRatio = finalValue.includes('/');
+                    
+                    if (isRatio) return; // 跳过比例类型的数据
+                    
+                    const numericValue = parseInt(finalValue);
+                    let currentValue = 0;
+                    const increment = numericValue / 60; // 60步完成动画
+                    
+                    const timer = setInterval(() => {
+                        currentValue += increment;
+                        if (currentValue >= numericValue) {
+                            currentValue = numericValue;
+                            clearInterval(timer);
+                        }
+                        
+                        let displayValue = Math.floor(currentValue);
+                        if (isPercentage) {
+                            stat.textContent = displayValue + '%';
+                        } else if (hasPlus) {
+                            stat.textContent = displayValue + '+';
+                        } else {
+                            stat.textContent = displayValue;
+                        }
+                    }, 25);
+                });
+            }
+            
+            // 功能卡片悬停效果增强
+            const featureItems = document.querySelectorAll('.feature-item');
+            featureItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    const icon = this.querySelector('.feature-icon');
+                    icon.style.transform = 'scale(1.2) rotate(5deg)';
+                    icon.style.color = '#4ecdc4';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    const icon = this.querySelector('.feature-icon');
+                    icon.style.transform = 'scale(1) rotate(0deg)';
+                    icon.style.color = '#ff6b6b';
+                });
+            });
+            
+            // 联系方式卡片点击效果
+            const contactItems = document.querySelectorAll('.contact-item');
+            contactItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const link = this.querySelector('.contact-link');
+                    if (link) {
+                        link.click();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

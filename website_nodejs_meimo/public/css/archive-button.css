@@ -1,0 +1,24 @@
+.archive-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.button-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.button-text {
+    font-family: 'Noto Sans SC', sans-serif;
+}
+
+.fas.fa-archive {
+    font-size: 1.2rem;
+}

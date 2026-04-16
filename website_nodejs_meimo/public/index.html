@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<!--
+    栖屿 Ember 轰趴馆 - 模块化主页面
+    @author Huameitang
+    这是网站的模块化主页面文件
+    采用组件化设计，将页面拆分为多个独立的模块
+    便于维护、扩展和团队协作开发
+    遵循SOLID原则，保持代码的可维护性和可扩展性
+-->
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>栖屿 Ember | 深藏不露的轰趴馆</title>
+
+    <!-- 外部字体和图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- 模块化CSS样式文件 -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/gallery.css">
+    <link rel="stylesheet" href="css/symbols.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/footer.css">
+
+    <!-- 性能优化CSS文件 -->
+    <link rel="stylesheet" href="css/low-performance.css" id="low-performance-css" disabled>
+    <link rel="stylesheet" href="css/performance-boost.css" id="performance-boost-css">
+    <link rel="stylesheet" href="css/emergency-optimization.css">
+    <link rel="stylesheet" href="css/scroll-optimize.css">
+    <link rel="stylesheet" href="css/advanced-performance.css">
+
+    <!-- 背景效果元素 -->
+    <div class="vhs-overlay"></div>
+    <div class="noise"></div>
+    <div class="distortion"></div>
+
+    <!-- 头部导航组件 -->
+    <div id="header-component"></div>
+
+    <!-- 主横幅组件 -->
+    <div id="hero-component"></div>
+
+    <!-- 功能卡片组件 -->
+    <div id="cards-component"></div>
+
+    <!-- 画廊组件 -->
+    <div id="gallery-component"></div>
+
+    <!-- 符号库组件 -->
+    <div id="symbols-component"></div>
+
+
+
+    <!-- 关于区域组件 -->
+    <div id="about-component"></div>
+
+    <!-- 页脚组件 -->
+    <div id="footer-component"></div>
+
+    <!-- 悬浮按钮组件 -->
+    <div id="floating-button-component"></div>
+
+    <!-- 性能配置模块（优先加载） -->
+    <script src="js/performance-config.js"></script>
+    <script src="js/scroll-optimizer.js"></script>
+
+    <!-- 模块化JavaScript文件 -->
+    <script src="js/performance-monitor.js"></script>
+    <script type="module" src="js/performance-optimizer.js"></script>
+    <script src="js/advanced-performance-optimizer.js"></script>
+    <script src="js/resource-optimizer.js"></script>
+    <script src="js/smart-cache-manager.js"></script>
+    <script type="module" src="js/effects.js"></script>
+    <script type="module" src="js/interactions.js"></script>
+
+    <!-- 组件加载脚本 -->
+    <script>
+        /**
+         * 组件加载器
+         * @author Huameitang
+         * 这个脚本负责动态加载各个HTML组件
+         * 实现真正的模块化开发，便于维护和复用
+         * 采用异步加载方式，提升页面性能
+         */
+
+        /**
+         * 加载HTML组件
+         * 通过fetch API异步加载组件HTML文件
+         * 并将内容插入到指定的容器中
+         * @param {string} componentPath - 组件文件路径
+         * @param {string} containerId - 容器元素ID
+         * @author Huameitang
+         */
+        async function loadComponent(componentPath, containerId, callback) {
+            try {
+                const response = await fetch(componentPath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const html = await response.text();
+                const container = document.getElementById(containerId);
+                if (container) {
+                    container.innerHTML = html;
+                    if (callback) {
+                        callback();
+                    }
+                } else {
+                    console.error(`Container with ID '${containerId}' not found`);
+                }
+            } catch (error) {
+                console.error(`Error loading component ${componentPath}:`, error);
+            }
+        }
+
+        /**
+         * 初始化性能优化
+         * 根据性能配置应用相应的优化策略
+         * 包括CSS类添加和组件加载策略调整
+         * 新增GPU加速和智能性能检测
+         * @author Huameitang
+         */
+        function initializePerformanceOptimizations() {
+            const performanceConfig = window.PerformanceConfig.getPerformanceConfig();
+            const performanceLevel = window.PerformanceConfig.detectPerformanceLevel();
+
+            // 应用性能级别CSS类
+            document.body.classList.add(`${performanceLevel.toLowerCase()}-performance`);
+
+            // 根据性能级别启用相应的CSS和优化
+            if (performanceConfig === window.PerformanceConfig.PERFORMANCE_CONFIG.LOW) {
+                const lowPerfCSS = document.getElementById('low-performance-css');
+                if (lowPerfCSS) {
+                    lowPerfCSS.disabled = false;
+                }
+                document.body.classList.add('low-performance');
+
+                // 移动设备额外优化
+                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                    document.body.classList.add('mobile-optimized');
+                    if (window.innerWidth <= 480) {
+                        document.body.classList.add('ultra-mobile-optimized');
+                    }
+                }
+            } else if (performanceConfig === window.PerformanceConfig.PERFORMANCE_CONFIG.HIGH) {
+                // 高性能模式启用GPU加速
+                document.body.classList.add('gpu-accelerated', 'high-performance');
+
+                // 高刷新率显示器优化
+                if (window.devicePixelRatio > 1.5) {
+                    document.body.classList.add('high-refresh-optimized');
+                }
+            } else {
+                // 中等性能模式
+                document.body.classList.add('medium-performance');
+            }
+
+            // 通用优化类
+            document.body.classList.add('render-optimized', 'memory-optimized', 'scroll-optimized');
+
+            // 检测用户偏好
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.body.classList.add('motion-reduced');
+            }
+
+            if (window.matchMedia('(prefers-reduced-data: reduce)').matches) {
+                document.body.classList.add('data-saver');
+            }
+
+            // 根据性能模式调整组件加载策略
+            if (performanceConfig === window.PerformanceConfig.PERFORMANCE_CONFIG.LOW) {
+                // 低性能模式：串行加载，减少并发压力
+                loadComponentsSequentially();
+            } else {
+                // 高性能模式：并行加载，提升加载速度
+                loadComponentsInParallel();
+            }
+
+            // 单独加载并初始化悬浮按钮
+            loadComponent('components/floating-button.html', 'floating-button-component', () => {
+                if (window.initModal) {
+                    window.initModal();
+                }
+            });
+        }
+
+        /**
+         * 串行加载组件（低性能模式）
+         * 逐个加载组件以减少并发压力
+         * 新增智能延迟和错误恢复机制
+         * @author Huameitang
+         */
+        async function loadComponentsSequentially() {
+            const components = [
+                { name: 'header', url: 'components/header.html', priority: 'high' },
+                { name: 'hero', url: 'components/hero.html', priority: 'high' },
+                { name: 'gallery', url: 'components/gallery.html', priority: 'medium' },
+                { name: 'symbols', url: 'components/symbols.html', priority: 'low' },
+                { name: 'footer', url: 'components/footer.html', priority: 'low' }
+            ];
+
+            let loadedCount = 0;
+            const totalComponents = components.length;
+
+            for (const component of components) {
+                try {
+                    // 显示加载进度
+                    updateLoadingProgress(loadedCount, totalComponents);
+
+                    await loadComponent(component.url, component.name + '-component');
+                    loadedCount++;
+
+                    // 根据优先级调整延迟
+                    const delay = component.priority === 'high' ? 30 :
+                        component.priority === 'medium' ? 50 : 100;
+
+                    // 检查内存压力
+                    if (performance.memory && performance.memory.usedJSHeapSize > 50 * 1024 * 1024) {
+                        await new Promise(resolve => setTimeout(resolve, delay * 2));
+                    } else {
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    }
+
+                    // 触发垃圾回收（如果可用）
+                    if (window.gc && loadedCount % 2 === 0) {
+                        window.gc();
+                    }
+
+                } catch (error) {
+                    console.error(`加载组件 ${component.name} 失败:`, error);
+
+                    // 错误恢复：尝试重新加载一次
+                    try {
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                        await loadComponent(component.url, component.name + '-component');
+                        loadedCount++;
+                    } catch (retryError) {
+                        console.error(`重试加载组件 ${component.name} 仍然失败:`, retryError);
+                        // 加载失败时显示占位符
+                        showComponentPlaceholder(component.name);
+                    }
+                }
+            }
+
+            // 隐藏加载进度
+            hideLoadingProgress();
+        }
+
+        /**
+         * 并行加载组件（高性能模式）
+         * 同时加载所有组件以提升速度
+         * 新增资源预加载和智能批处理
+         * @author Huameitang
+         */
+        async function loadComponentsInParallel() {
+            const components = [
+                { name: 'header', url: 'components/header.html', priority: 'critical' },
+                { name: 'hero', url: 'components/hero.html', priority: 'critical' },
+                { name: 'gallery', url: 'components/gallery.html', priority: 'important' },
+                { name: 'symbols', url: 'components/symbols.html', priority: 'normal' },
+                { name: 'footer', url: 'components/footer.html', priority: 'normal' }
+            ];
+
+            // 预加载关键资源
+            preloadCriticalResources(components);
+
+            // 分批并行加载
+            const criticalComponents = components.filter(c => c.priority === 'critical');
+            const importantComponents = components.filter(c => c.priority === 'important');
+            const normalComponents = components.filter(c => c.priority === 'normal');
+
+            try {
+                // 第一批：关键组件
+                const criticalPromises = criticalComponents.map(component =>
+                    loadComponentWithRetry(component.url, component.name + '-component', 2)
+                );
+                await Promise.all(criticalPromises);
+
+                // 第二批：重要组件
+                const importantPromises = importantComponents.map(component =>
+                    loadComponentWithRetry(component.url, component.name + '-component', 1)
+                );
+                await Promise.all(importantPromises);
+
+                // 第三批：普通组件（使用requestIdleCallback优化）
+                if ('requestIdleCallback' in window) {
+                    requestIdleCallback(() => {
+                        const normalPromises = normalComponents.map(component =>
+                            loadComponentWithRetry(component.url, component.name + '-component', 1)
+                        );
+                        Promise.all(normalPromises);
+                    });
+                } else {
+                    // 降级处理
+                    setTimeout(() => {
+                        const normalPromises = normalComponents.map(component =>
+                            loadComponentWithRetry(component.url, component.name + '-component', 1)
+                        );
+                        Promise.all(normalPromises);
+                    }, 100);
+                }
+
+            } catch (error) {
+                console.error('并行加载组件时发生错误:', error);
+                // 降级到串行加载
+                console.log('降级到串行加载模式');
+                await loadComponentsSequentially();
+            }
+
+            // 启动性能监控
+            initAdvancedPerformanceMonitoring();
+        }
+
+        /**
+         * 初始化所有组件
+         * 检测性能并选择合适的加载策略
+         * 新增性能监控和智能优化
+         * @author Huameitang
+         */
+        async function initializeComponents() {
+            try {
+                console.log('开始初始化组件...');
+
+                // 1. 首先初始化智能缓存管理器
+                if (window.SmartCacheManager) {
+                    console.log('智能缓存管理器已启动');
+
+                    // 预加载关键资源
+                    const criticalResources = [
+                        { key: 'main-css', url: 'css/style.css', type: 'style', priority: 'critical' },
+                        { key: 'effects-js', url: 'js/effects.js', type: 'script', priority: 'high' },
+                        { key: 'interactions-js', url: 'js/interactions.js', type: 'script', priority: 'high' }
+                    ];
+
+                    window.SmartCacheManager.preload(criticalResources, { priority: 'critical' });
+                }
+
+                // 2. 初始化综合性能优化器
+                if (window.PerformanceOptimizer) {
+                    console.log('启动综合性能优化器');
+                    // 性能优化器会自动初始化所有优化功能
+                }
+
+                // 3. 初始化性能监控
+                if (window.PerformanceMonitor) {
+                    window.PerformanceMonitor.startMonitoring();
+
+                    // 创建性能指示器
+                    createPerformanceIndicator();
+
+                    // 注册性能事件回调
+                    window.PerformanceMonitor.on('onLowFPS', (metrics) => {
+                        console.warn('检测到低FPS，自动优化中...', metrics);
+                        document.body.classList.add('emergency-optimization', 'low-fps');
+                        updatePerformanceIndicator('critical', metrics.fps);
+
+                        // 通知性能优化器
+                        if (window.PerformanceOptimizer) {
+                            window.PerformanceOptimizer.handleLowFPS(metrics.fps);
+                        }
+
+                        // 显示性能警告
+                        showPerformanceWarning('低帧率检测', `当前FPS: ${metrics.fps.toFixed(1)}`);
+                    });
+
+                    window.PerformanceMonitor.on('onHighMemory', (metrics) => {
+                        console.warn('内存使用过高，清理中...', metrics);
+                        document.body.classList.add('memory-cleanup');
+                        triggerEmergencyCleanup();
+                        updatePerformanceIndicator('warning', null, `内存: ${(metrics.memory / 1024 / 1024).toFixed(1)}MB`);
+
+                        // 通知性能优化器
+                        if (window.PerformanceOptimizer) {
+                            window.PerformanceOptimizer.optimizeMemoryUsage();
+                        }
+
+                        // 显示内存警告
+                        showPerformanceWarning('内存使用过高', `当前内存: ${(metrics.memory / 1024 / 1024).toFixed(1)}MB`);
+                    });
+
+                    window.PerformanceMonitor.on('onSlowNetwork', (metrics) => {
+                        console.warn('网络连接缓慢，启用网络优化...', metrics);
+                        document.body.classList.add('slow-network');
+                        updatePerformanceIndicator('warning');
+
+                        // 显示网络警告
+                        showPerformanceWarning('网络连接缓慢', '已启用网络优化模式');
+                    });
+
+                    window.PerformanceMonitor.on('onPerformanceImproved', (metrics) => {
+                        console.log('性能已改善，恢复功能中...', metrics);
+                        document.body.classList.remove('emergency-optimization', 'low-fps', 'memory-cleanup', 'slow-network');
+                        updatePerformanceIndicator('good', metrics.fps);
+
+                        // 通知性能优化器
+                        if (window.PerformanceOptimizer) {
+                            window.PerformanceOptimizer.handleFPSRecovery(metrics.fps);
+                        }
+
+                        // 隐藏性能警告
+                        hidePerformanceWarning();
+                    });
+                }
+
+                // 2. 初始化性能优化配置
+                initializePerformanceOptimizations();
+
+                // 3. 加载HTML组件
+                const components = [
+                    { path: 'components/header.html', container: 'header-component' },
+                    { path: 'components/hero.html', container: 'hero-component' },
+                    { path: 'components/cards.html', container: 'cards-component' },
+                    { path: 'components/gallery.html', container: 'gallery-component' },
+                    { path: 'components/symbols.html', container: 'symbols-component' },
+                    { path: 'components/about.html', container: 'about-component' },
+                    { path: 'components/footer.html', container: 'footer-component' }
+                ];
+
+                // 根据性能配置决定加载策略
+                const performanceConfig = window.PerformanceConfig ?
+                    window.PerformanceConfig.getPerformanceConfig() : null;
+
+                if (performanceConfig === window.PerformanceConfig?.PERFORMANCE_CONFIG.LOW) {
+                    // 低性能模式：串行加载组件，减少并发压力
+                    for (const component of components) {
+                        await loadComponent(component.path, component.container);
+                    }
+                    console.log('所有组件已串行加载完成（低性能模式）');
+                } else {
+                    // 高性能模式：并行加载所有组件
+                    const loadPromises = components.map(component =>
+                        loadComponent(component.path, component.container)
+                    );
+
+                    try {
+                        await Promise.all(loadPromises);
+                        console.log('所有组件已并行加载完成');
+                    } catch (error) {
+                        console.error('组件加载过程中出现错误:', error);
+                    }
+                }
+
+                // 4. 根据性能级别初始化功能模块
+                if (performanceConfig === window.PerformanceConfig?.PERFORMANCE_CONFIG.LOW) {
+                    // 低性能模式：串行初始化
+                    await initializeLowPerformanceMode();
+                } else {
+                    // 高性能模式：并行初始化
+                    await initializeHighPerformanceMode();
+                }
+
+                // 5. 初始化完成后的优化
+                await finalizeInitialization();
+
+                // 6. 启动智能性能监控和缓存报告
+                if (window.PerformanceOptimizer) {
+                    // 获取性能报告
+                    const report = window.PerformanceOptimizer.getPerformanceReport();
+                    console.log('性能报告:', report);
+
+                    // 如果有优化建议，显示给开发者
+                    if (report.recommendations.length > 0) {
+                        console.warn('性能优化建议:', report.recommendations);
+                    }
+                }
+
+                // 显示缓存统计信息
+                if (window.SmartCacheManager) {
+                    const cacheStats = window.SmartCacheManager.getStats();
+                    console.log('缓存统计:', cacheStats);
+
+                    // 注册缓存事件监听
+                    window.SmartCacheManager.on('cacheHit', (data) => {
+                        console.log('缓存命中:', data.key);
+                    });
+
+                    window.SmartCacheManager.on('cacheMiss', (data) => {
+                        console.log('缓存未命中:', data.key, data.reason || '');
+                    });
+                }
+
+                console.log('所有组件初始化完成');
+            } catch (error) {
+                console.error('组件初始化失败:', error);
+                // 降级到基础模式
+                await initializeBasicMode();
+            }
+        }
+
+        /**
+         * 高级性能监控
+         * 监控页面性能指标并动态调整
+         * @author Huameitang
+         */
+        function initAdvancedPerformanceMonitoring() {
+            // 监控页面加载性能
+            if ('PerformanceObserver' in window) {
+                // 监控长任务
+                const longTaskObserver = new PerformanceObserver((list) => {
+                    for (const entry of list.getEntries()) {
+                        if (entry.duration > 50) {
+                            console.warn(`检测到长任务: ${entry.duration.toFixed(2)}ms`);
+                            // 触发性能保护模式
+                            document.body.classList.add('performance-protection');
+                        }
+                    }
+                });
+
+                try {
+                    longTaskObserver.observe({ entryTypes: ['longtask'] });
+                } catch (e) {
+                    console.log('长任务监控不支持');
+                }
+
+                // 监控布局偏移
+                const clsObserver = new PerformanceObserver((list) => {
+                    for (const entry of list.getEntries()) {
+                        if (entry.value > 0.1) {
+                            console.warn(`检测到布局偏移: ${entry.value.toFixed(3)}`);
+                        }
+                    }
+                });
+
+                try {
+                    clsObserver.observe({ entryTypes: ['layout-shift'] });
+                } catch (e) {
+                    console.log('布局偏移监控不支持');
+                }
+            }
+
+            // 监控内存使用
+            if (performance.memory) {
+                setInterval(() => {
+                    const memoryInfo = performance.memory;
+                    const usedMB = Math.round(memoryInfo.usedJSHeapSize / 1048576);
+                    const limitMB = Math.round(memoryInfo.jsHeapSizeLimit / 1048576);
+                    const usagePercent = (usedMB / limitMB) * 100;
+
+                    if (usagePercent > 85) {
+                        console.warn(`内存使用率过高: ${usagePercent.toFixed(1)}%`);
+                        document.body.classList.add('memory-pressure');
+
+                        // 触发垃圾回收（如果支持）
+                        if (window.gc && typeof window.gc === 'function') {
+                            window.gc();
+                        }
+                    } else if (usagePercent < 70) {
+                        document.body.classList.remove('memory-pressure');
+                    }
+                }, 15000);
+            }
+
+            // 监控网络状态
+            if ('connection' in navigator) {
+                const connection = navigator.connection;
+
+                function updateConnectionStatus() {
+                    const effectiveType = connection.effectiveType;
+                    document.body.classList.remove('slow-connection', 'fast-connection');
+
+                    if (effectiveType === 'slow-2g' || effectiveType === '2g') {
+                        document.body.classList.add('slow-connection', 'data-saver');
+                    } else if (effectiveType === '4g') {
+                        document.body.classList.add('fast-connection');
+                    }
+                }
+
+                connection.addEventListener('change', updateConnectionStatus);
+                updateConnectionStatus();
+            }
+        }
+
+        /**
+         * 带重试机制的组件加载
+         * 提供更可靠的组件加载体验
+         * @param {string} componentPath - 组件文件路径
+         * @param {string} containerId - 容器元素ID
+         * @param {number} maxRetries - 最大重试次数
+         * @returns {Promise} 加载Promise
+         * @author Huameitang
+         */
+        async function loadComponentWithRetry(componentPath, containerId, maxRetries = 1) {
+            let lastError;
+
+            for (let attempt = 0; attempt <= maxRetries; attempt++) {
+                try {
+                    if (attempt > 0) {
+                        console.log(`重试加载组件 ${containerId}，第 ${attempt} 次尝试`);
+                        await new Promise(resolve => setTimeout(resolve, attempt * 500));
+                    }
+
+                    await loadComponent(componentPath, containerId);
+                    return;
+                } catch (error) {
+                    lastError = error;
+                    console.warn(`加载组件 ${containerId} 失败 (尝试 ${attempt + 1}/${maxRetries + 1}):`, error);
+                }
+            }
+
+            // 所有重试都失败了
+            console.error(`组件 ${containerId} 加载完全失败:`, lastError);
+            showComponentPlaceholder(containerId);
+            throw lastError;
+        }
+
+        /**
+         * 预加载关键资源
+         * 提前加载关键组件以提升性能
+         * @param {Array} components - 组件列表
+         * @author Huameitang
+         */
+        function preloadCriticalResources(components) {
+            const criticalComponents = components.filter(c => c.priority === 'critical');
+
+            criticalComponents.forEach(component => {
+                const link = document.createElement('link');
+                link.rel = 'prefetch';
+                link.href = component.url;
+                document.head.appendChild(link);
+            });
+
+            // 预加载关键CSS和JS
+            const criticalResources = [
+                'css/styles.css',
+                'css/hero.css',
+                'js/effects.js',
+                'js/performance-config.js'
+            ];
+
+            criticalResources.forEach(resource => {
+                const link = document.createElement('link');
+                link.rel = 'preload';
+                link.as = resource.endsWith('.css') ? 'style' : 'script';
+                link.href = resource;
+                document.head.appendChild(link);
+            });
+        }
+
+        /**
+         * 显示组件占位符
+         * 当组件加载失败时显示友好的占位符
+         * @param {string} componentName - 组件名称
+         * @author Huameitang
+         */
+        function showComponentPlaceholder(componentName) {
+            const container = document.getElementById(componentName);
+            if (container) {
+                container.innerHTML = `
+                    <div class="component-placeholder">
+                        <div class="placeholder-content">
+                            <div class="placeholder-icon">⚠️</div>
+                            <div class="placeholder-text">组件 ${componentName} 暂时无法加载</div>
+                            <button class="retry-button" onclick="retryLoadComponent('${componentName}')">
+                                重试加载
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                // 添加占位符样式
+                if (!document.getElementById('placeholder-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'placeholder-styles';
+                    style.textContent = `
+                        .component-placeholder {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            min-height: 100px;
+                            background: rgba(255, 255, 255, 0.05);
+                            border: 1px dashed rgba(255, 255, 255, 0.2);
+                            border-radius: 8px;
+                            margin: 10px 0;
+                        }
+                        .placeholder-content {
+                            text-align: center;
+                            color: rgba(255, 255, 255, 0.7);
+                        }
+                        .placeholder-icon {
+                            font-size: 24px;
+                            margin-bottom: 8px;
+                        }
+                        .placeholder-text {
+                            margin-bottom: 12px;
+                            font-size: 14px;
+                        }
+                        .retry-button {
+                            background: rgba(255, 255, 255, 0.1);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            color: white;
+                            padding: 6px 12px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            font-size: 12px;
+                            transition: background 0.3s;
+                        }
+                        .retry-button:hover {
+                            background: rgba(255, 255, 255, 0.2);
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            }
+        }
+
+        /**
+         * 重试加载组件
+         * 提供手动重试机制
+         * @param {string} componentName - 组件名称
+         * @author Huameitang
+         */
+        window.retryLoadComponent = async function (componentName) {
+            const componentMap = {
+                'header-component': 'components/header.html',
+                'hero-component': 'components/hero.html',
+                'gallery-component': 'components/gallery.html',
+                'symbols-component': 'components/symbols.html',
+                'footer-component': 'components/footer.html'
+            };
+
+            const url = componentMap[componentName];
+            if (url) {
+                try {
+                    await loadComponent(url, componentName);
+                    console.log(`组件 ${componentName} 重试加载成功`);
+                } catch (error) {
+                    console.error(`组件 ${componentName} 重试加载失败:`, error);
+                }
+            }
+        };
+
+        /**
+         * 更新加载进度
+         * 显示组件加载进度
+         * @param {number} loaded - 已加载数量
+         * @param {number} total - 总数量
+         * @author Huameitang
+         */
+        function updateLoadingProgress(loaded, total) {
+            let progressBar = document.getElementById('loading-progress');
+            if (!progressBar) {
+                progressBar = document.createElement('div');
+                progressBar.id = 'loading-progress';
+                progressBar.innerHTML = `
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">加载中...</div>
+                    </div>
+                `;
+
+                // 添加进度条样式
+                const style = document.createElement('style');
+                style.textContent = `
+                    #loading-progress {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        z-index: 10000;
+                        background: rgba(0, 0, 0, 0.8);
+                        padding: 20px;
+                    }
+                    .progress-container {
+                        max-width: 400px;
+                        margin: 0 auto;
+                        text-align: center;
+                    }
+                    .progress-bar {
+                        width: 100%;
+                        height: 4px;
+                        background: rgba(255, 255, 255, 0.2);
+                        border-radius: 2px;
+                        overflow: hidden;
+                        margin-bottom: 10px;
+                    }
+                    .progress-fill {
+                        height: 100%;
+                        background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+                        border-radius: 2px;
+                        transition: width 0.3s ease;
+                    }
+                    .progress-text {
+                        color: white;
+                        font-size: 14px;
+                    }
+                `;
+                document.head.appendChild(style);
+                document.body.appendChild(progressBar);
+            }
+
+            const percentage = (loaded / total) * 100;
+            const progressFill = progressBar.querySelector('.progress-fill');
+            const progressText = progressBar.querySelector('.progress-text');
+
+            if (progressFill) {
+                progressFill.style.width = `${percentage}%`;
+            }
+            if (progressText) {
+                progressText.textContent = `加载中... ${loaded}/${total} (${Math.round(percentage)}%)`;
+            }
+        }
+
+        /**
+         * 隐藏加载进度
+         * 组件加载完成后隐藏进度条
+         * @author Huameitang
+         */
+        function hideLoadingProgress() {
+            const progressBar = document.getElementById('loading-progress');
+            if (progressBar) {
+                progressBar.style.opacity = '0';
+                setTimeout(() => {
+                    progressBar.remove();
+                }, 300);
+            }
+        }
+
+        /**
+         * 低性能模式初始化
+         * 串行加载各个功能模块以减少资源压力
+         * 优先加载关键功能
+         * @author Huameitang
+         */
+        async function initializeLowPerformanceMode() {
+            console.log('启动低性能模式初始化');
+
+            // 串行初始化各个模块
+            try {
+                // 1. 滚动优化（最高优先级）
+                if (window.Interactions?.initScrollOptimizations) {
+                    await new Promise(resolve => {
+                        window.Interactions.initScrollOptimizations();
+                        setTimeout(resolve, 100);
+                    });
+                }
+
+                // 2. 基础交互功能
+                if (window.Interactions?.initializeInteractions) {
+                    await new Promise(resolve => {
+                        window.Interactions.initializeInteractions();
+                        setTimeout(resolve, 150);
+                    });
+                }
+
+                // 3. 简化的视觉效果
+                if (window.Effects?.initializeEffects) {
+                    await new Promise(resolve => {
+                        window.Effects.initializeEffects();
+                        setTimeout(resolve, 200);
+                    });
+                }
+
+            } catch (error) {
+                console.error('低性能模式初始化失败:', error);
+            }
+        }
+
+        /**
+         * 高性能模式初始化
+         * 并行加载各个功能模块以提升加载速度
+         * 启用所有高级功能
+         * @author Huameitang
+         */
+        async function initializeHighPerformanceMode() {
+            console.log('启动高性能模式初始化');
+
+            // 并行初始化各个模块
+            const initPromises = [];
+
+            // 滚动优化
+            if (window.Interactions?.initScrollOptimizations) {
+                initPromises.push(new Promise(resolve => {
+                    window.Interactions.initScrollOptimizations();
+                    resolve();
+                }));
+            }
+
+            // 交互功能
+            if (window.Interactions?.initializeInteractions) {
+                initPromises.push(new Promise(resolve => {
+                    window.Interactions.initializeInteractions();
+                    resolve();
+                }));
+            }
+
+            // 视觉效果
+            if (window.Effects?.initializeEffects) {
+                initPromises.push(new Promise(resolve => {
+                    window.Effects.initializeEffects();
+                    resolve();
+                }));
+            }
+
+            try {
+                await Promise.all(initPromises);
+            } catch (error) {
+                console.error('高性能模式初始化失败:', error);
+            }
+        }
+
+        /**
+         * 基础模式初始化
+         * 当其他模式失败时的降级方案
+         * 只加载最基本的功能
+         * @author Huameitang
+         */
+        async function initializeBasicMode() {
+            console.log('启动基础模式初始化');
+
+            try {
+                // 只初始化最基本的交互功能
+                if (typeof initializeInteractions === 'function') {
+                    initializeInteractions();
+                } else if (window.Interactions?.initializeInteractions) {
+                    window.Interactions.initializeInteractions();
+                }
+
+                // 添加基础模式标识
+                document.body.classList.add('basic-mode');
+
+            } catch (error) {
+                console.error('基础模式初始化也失败了:', error);
+            }
+        }
+
+        /**
+         * 完成初始化
+         * 执行初始化完成后的优化和清理工作
+         * 启动后台监控和优化任务
+         * @author Huameitang
+         */
+        async function finalizeInitialization() {
+            // 清理初始化过程中的临时元素
+            const tempElements = document.querySelectorAll('.temp-loading, .init-placeholder');
+            tempElements.forEach(el => el.remove());
+
+            // 启动后台优化任务
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(() => {
+                    optimizeAfterLoad();
+                });
+            } else {
+                setTimeout(optimizeAfterLoad, 1000);
+            }
+
+            // 启动智能资源管理
+            initSmartResourceManagement();
+
+            // 启动自适应性能调整
+            initAdaptivePerformance();
+
+            // 标记初始化完成
+            document.body.classList.add('initialized');
+
+            // 触发自定义事件
+            const initCompleteEvent = new CustomEvent('componentsInitialized', {
+                detail: {
+                    timestamp: Date.now(),
+                    performanceLevel: window.PerformanceConfig?.detectPerformanceLevel(),
+                    optimizerActive: !!window.PerformanceOptimizer
+                }
+            });
+            document.dispatchEvent(initCompleteEvent);
+        }
+
+        /**
+         * 加载完成后的优化
+         * 执行一些不影响初始加载的优化任务
+         * 预加载下一页面的资源
+         * @author Huameitang
+         */
+        function optimizeAfterLoad() {
+            // 预加载关键资源
+            const criticalResources = [
+                'css/gallery.css',
+                'css/symbols.css',
+                'images/logo1.PNG'
+            ];
+
+            criticalResources.forEach(resource => {
+                const link = document.createElement('link');
+                link.rel = 'prefetch';
+                link.href = resource;
+                document.head.appendChild(link);
+            });
+
+            // 优化图片加载
+            const images = document.querySelectorAll('img[data-src]');
+            if (images.length > 0 && 'IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            imageObserver.unobserve(img);
+                        }
+                    });
+                });
+
+                images.forEach(img => imageObserver.observe(img));
+            }
+
+            // 清理不必要的样式
+            const unusedStyles = document.querySelectorAll('style[data-temp]');
+            unusedStyles.forEach(style => style.remove());
+        }
+
+        /**
+         * 创建性能指示器
+         * 在页面右上角显示当前性能状态
+         * @author Huameitang
+         */
+        function createPerformanceIndicator() {
+            const indicator = document.createElement('div');
+            indicator.id = 'performance-indicator';
+            indicator.className = 'performance-indicator good';
+            indicator.title = '性能状态: 良好';
+            document.body.appendChild(indicator);
+        }
+
+        /**
+         * 更新性能指示器
+         * @param {string} status - 性能状态 (good/warning/critical)
+         * @param {number} fps - 当前FPS
+         * @param {string} extra - 额外信息
+         * @author Huameitang
+         */
+        function updatePerformanceIndicator(status, fps, extra) {
+            const indicator = document.getElementById('performance-indicator');
+            if (indicator) {
+                indicator.className = `performance-indicator ${status}`;
+
+                let title = '性能状态: ';
+                switch (status) {
+                    case 'good': title += '良好'; break;
+                    case 'warning': title += '警告'; break;
+                    case 'critical': title += '严重'; break;
+                }
+
+                if (fps) title += ` | FPS: ${fps.toFixed(1)}`;
+                if (extra) title += ` | ${extra}`;
+
+                indicator.title = title;
+                indicator.setAttribute('data-fps', fps ? fps.toFixed(1) : '');
+            }
+        }
+
+        /**
+         * 显示性能警告
+         * @param {string} title - 警告标题
+         * @param {string} message - 警告消息
+         * @author Huameitang
+         */
+        function showPerformanceWarning(title, message) {
+            // 移除现有警告
+            hidePerformanceWarning();
+
+            const warning = document.createElement('div');
+            warning.id = 'performance-warning';
+            warning.style.cssText = `
+                position: fixed;
+                top: 50px;
+                right: 10px;
+                background: rgba(255, 0, 0, 0.9);
+                color: white;
+                padding: 10px 15px;
+                border-radius: 5px;
+                font-family: system-ui, sans-serif;
+                font-size: 12px;
+                z-index: 10001;
+                max-width: 250px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            `;
+
+            warning.innerHTML = `
+                <div style="font-weight: bold; margin-bottom: 5px;">${title}</div>
+                <div>${message}</div>
+                <div style="margin-top: 5px; font-size: 10px; opacity: 0.8;">自动优化已启用</div>
+            `;
+
+            document.body.appendChild(warning);
+
+            // 5秒后自动隐藏
+            setTimeout(() => {
+                if (warning.parentNode) {
+                    warning.style.opacity = '0';
+                    warning.style.transition = 'opacity 0.5s';
+                    setTimeout(() => warning.remove(), 500);
+                }
+            }, 5000);
+        }
+
+        /**
+         * 隐藏性能警告
+         * @author Huameitang
+         */
+        function hidePerformanceWarning() {
+            const warning = document.getElementById('performance-warning');
+            if (warning) {
+                warning.remove();
+            }
+        }
+
+        /**
+         * 紧急清理
+         * 当内存使用过高时执行的紧急清理措施
+         * 释放不必要的资源
+         * @author Huameitang
+         */
+        function triggerEmergencyCleanup() {
+            console.warn('执行紧急内存清理');
+
+            // 清理大图片
+            const largeImages = document.querySelectorAll('img');
+            largeImages.forEach(img => {
+                if (img.naturalWidth > 1920 || img.naturalHeight > 1080) {
+                    if (!img.classList.contains('critical')) {
+                        img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzMzMyIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZTwvdGV4dD48L3N2Zz4=';
+                        img.setAttribute('data-large', 'true');
+                    }
+                }
+            });
+
+            // 暂停所有动画
+            const animations = document.querySelectorAll('*');
+            animations.forEach(el => {
+                if (el.style.animationName && el.style.animationName !== 'none') {
+                    el.style.animationPlayState = 'paused';
+                }
+            });
+
+            // 移除复杂效果
+            const complexEffects = document.querySelectorAll('.particle-effect, .complex-background, .vhs-overlay, .distortion-effect');
+            complexEffects.forEach(el => {
+                el.style.display = 'none';
+                el.style.visibility = 'hidden';
+            });
+
+            // 清理事件监听器
+            const elementsWithEvents = document.querySelectorAll('[data-has-events]');
+            elementsWithEvents.forEach(el => {
+                const newEl = el.cloneNode(true);
+                el.parentNode.replaceChild(newEl, el);
+            });
+
+            // 清理定时器
+            if (window.performanceTimers) {
+                window.performanceTimers.forEach(timer => clearTimeout(timer));
+                window.performanceTimers = [];
+            }
+
+            // 强制垃圾回收
+            if (window.gc) {
+                window.gc();
+            }
+
+            // 触发内存清理事件
+            const cleanupEvent = new CustomEvent('memoryCleanup', {
+                detail: { timestamp: Date.now() }
+            });
+            document.dispatchEvent(cleanupEvent);
+        }
+
+        // 页面加载完成事件监听
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeComponents);
+        } else {
+            // 如果DOM已经加载完成，直接初始化
+            initializeComponents();
+        }
+
+        /**
+         * 初始化智能资源管理
+         * 根据设备性能和网络状况智能管理资源
+         * 动态调整资源加载策略
+         * @author Huameitang
+         */
+        function initSmartResourceManagement() {
+            // 监控网络状况
+            if ('connection' in navigator) {
+                const connection = navigator.connection;
+
+                // 根据网络类型调整策略
+                if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
+                    document.body.classList.add('slow-network');
+                    // 禁用非关键资源
+                    disableNonCriticalResources();
+                }
+
+                // 监听网络变化
+                connection.addEventListener('change', () => {
+                    console.log('网络状况变化:', connection.effectiveType);
+                    adjustResourceStrategy(connection.effectiveType);
+                });
+            }
+
+            // 监控设备内存
+            if ('deviceMemory' in navigator) {
+                const deviceMemory = navigator.deviceMemory;
+                console.log('设备内存:', deviceMemory, 'GB');
+
+                if (deviceMemory < 4) {
+                    // 低内存设备优化
+                    document.body.classList.add('low-memory-device');
+                    enableLowMemoryOptimizations();
+                }
+            }
+        }
+
+        /**
+         * 初始化自适应性能调整
+         * 根据实时性能指标自动调整页面设置
+         * 确保最佳用户体验
+         * @author Huameitang
+         */
+        function initAdaptivePerformance() {
+            let performanceCheckInterval;
+
+            // 定期检查性能指标
+            performanceCheckInterval = setInterval(() => {
+                if (window.PerformanceOptimizer) {
+                    const report = window.PerformanceOptimizer.getPerformanceReport();
+
+                    // 根据性能报告调整设置
+                    if (report.optimizationLevel === 'emergency') {
+                        enableEmergencyMode();
+                    } else if (report.optimizationLevel === 'aggressive') {
+                        enableAggressiveMode();
+                    } else {
+                        enableNormalMode();
+                    }
+                }
+            }, 5000); // 每5秒检查一次
+
+            // 页面卸载时清理
+            window.addEventListener('beforeunload', () => {
+                if (performanceCheckInterval) {
+                    clearInterval(performanceCheckInterval);
+                }
+            });
+        }
+
+        /**
+         * 禁用非关键资源
+         * 在慢网络环境下禁用非必要的资源加载
+         * 优先保证核心功能
+         * @author Huameitang
+         */
+        function disableNonCriticalResources() {
+            // 禁用非关键图片
+            const nonCriticalImages = document.querySelectorAll('img:not(.critical)');
+            nonCriticalImages.forEach(img => {
+                img.style.display = 'none';
+            });
+
+            // 禁用装饰性元素
+            const decorativeElements = document.querySelectorAll('.decorative, .particle-effect');
+            decorativeElements.forEach(el => {
+                el.style.display = 'none';
+            });
+        }
+
+        /**
+         * 调整资源策略
+         * 根据网络状况动态调整资源加载策略
+         * @param {string} effectiveType - 网络类型
+         * @author Huameitang
+         */
+        function adjustResourceStrategy(effectiveType) {
+            const body = document.body;
+
+            // 移除所有网络相关的类
+            body.classList.remove('slow-network', 'fast-network');
+
+            if (effectiveType === 'slow-2g' || effectiveType === '2g') {
+                body.classList.add('slow-network');
+                disableNonCriticalResources();
+            } else if (effectiveType === '4g') {
+                body.classList.add('fast-network');
+                enableAllResources();
+            }
+        }
+
+        /**
+         * 启用低内存优化
+         * 为低内存设备启用特殊优化
+         * 减少内存占用
+         * @author Huameitang
+         */
+        function enableLowMemoryOptimizations() {
+            // 限制同时加载的图片数量
+            const images = document.querySelectorAll('img');
+            let loadedCount = 0;
+            const maxConcurrent = 3;
+
+            images.forEach((img, index) => {
+                if (index < maxConcurrent) {
+                    // 立即加载前几张图片
+                    return;
+                }
+
+                // 延迟加载其他图片
+                img.loading = 'lazy';
+            });
+
+            // 减少DOM复杂度
+            const complexElements = document.querySelectorAll('.complex-layout');
+            complexElements.forEach(el => {
+                el.style.display = 'block'; // 简化为块级布局
+            });
+        }
+
+        /**
+         * 启用紧急模式
+         * 最激进的性能优化模式
+         * 只保留最基本的功能
+         * @author Huameitang
+         */
+        function enableEmergencyMode() {
+            console.warn('启用紧急性能模式');
+            document.body.classList.add('emergency-mode');
+
+            // 禁用所有动画
+            const style = document.createElement('style');
+            style.textContent = '* { animation: none !important; transition: none !important; }';
+            document.head.appendChild(style);
+        }
+
+        /**
+         * 启用激进模式
+         * 较强的性能优化模式
+         * 保留部分视觉效果
+         * @author Huameitang
+         */
+        function enableAggressiveMode() {
+            console.warn('启用激进性能模式');
+            document.body.classList.add('aggressive-mode');
+        }
+
+        /**
+         * 启用正常模式
+         * 标准性能模式
+         * 保留所有功能和效果
+         * @author Huameitang
+         */
+        function enableNormalMode() {
+            document.body.classList.remove('emergency-mode', 'aggressive-mode');
+        }
+
+        /**
+         * 启用所有资源
+         * 在良好网络环境下启用所有资源
+         * 提供完整的用户体验
+         * @author Huameitang
+         */
+        function enableAllResources() {
+            // 显示所有图片
+            const hiddenImages = document.querySelectorAll('img[style*="display: none"]');
+            hiddenImages.forEach(img => {
+                img.style.display = '';
+            });
+
+            // 显示装饰性元素
+            const hiddenDecorative = document.querySelectorAll('.decorative[style*="display: none"]');
+            hiddenDecorative.forEach(el => {
+                el.style.display = '';
+            });
+        }
+
+        // 页面加载完成事件监听
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeComponents);
+        } else {
+            // 如果DOM已经加载完成，直接初始化
+            initializeComponents();
+        }
+
+        // 页面卸载时清理资源
+        window.addEventListener('beforeunload', () => {
+            if (window.PerformanceMonitor) {
+                window.PerformanceMonitor.stopMonitoring();
+            }
+
+            if (window.PerformanceOptimizer) {
+                window.PerformanceOptimizer.cleanup();
+            }
+
+            if (window.SmartCacheManager) {
+                window.SmartCacheManager.destroy();
+            }
+        });
+
+        /**
+         * 注册Service Worker
+         * 启用离线缓存和高级性能优化
+         * @author Huameitang
+         */
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    console.log('✅ Service Worker 注册成功:', registration.scope);
+
+                    // 监听Service Worker更新
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // 新版本可用，提示用户刷新
+                                if (confirm('发现新版本，是否立即更新？')) {
+                                    newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                    window.location.reload();
+                                }
+                            }
+                        });
+                    });
+
+                    // 预加载关键资源
+                    if (registration.active) {
+                        const channel = new MessageChannel();
+                        registration.active.postMessage({
+                            type: 'PRELOAD_RESOURCES',
+                            payload: {
+                                urls: [
+                                    '/components/about.html',
+                                    '/components/gallery.html',
+                                    '/components/symbols.html',
+                                    '/css/gallery.css',
+                                    '/css/symbols.css'
+                                ]
+                            }
+                        }, [channel.port2]);
+                    }
+
+                } catch (error) {
+                    console.error('❌ Service Worker 注册失败:', error);
+                }
+            });
+        }
+    </script>
+    </body>
+
+</html>

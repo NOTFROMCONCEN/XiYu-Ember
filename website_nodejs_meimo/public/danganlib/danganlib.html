@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>栖屿 Ember | 烬燃之岛的现实投影</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=ZCOOL+XiaoWei&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --dark-bg: #0d0a0b;
+            --ember-red: #c44536;
+            --ember-orange: #e27d60;
+            --ember-yellow: #e8a87c;
+            --ember-light: #f3e9dc;
+            --text-light: #f8f4e9;
+            --text-gray: #b8b2a6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(196, 69, 54, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(232, 168, 124, 0.1) 0%, transparent 20%);
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 烬火粒子效果 */
+        .ember-particle {
+            position: absolute;
+            background: var(--ember-orange);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.7;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: translateY(-100px) translateX(20px);
+                opacity: 0.3;
+            }
+
+            100% {
+                transform: translateY(0) translateX(40px);
+                opacity: 0.7;
+            }
+        }
+
+        /* 警告页样式 */
+        #warning-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .warning-stamp {
+            font-family: 'ZCOOL XiaoWei', serif;
+            color: var(--ember-red);
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(196, 69, 54, 0.5);
+            position: relative;
+        }
+
+        .warning-stamp::after {
+            content: "";
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            top: -10%;
+            left: -10%;
+            border: 2px solid var(--ember-red);
+            border-radius: 5px;
+            box-shadow: 0 0 15px var(--ember-red);
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.7;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 0.7;
+            }
+        }
+
+        .access-level {
+            background: rgba(25, 15, 15, 0.8);
+            border: 1px solid var(--ember-orange);
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .access-level::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--ember-yellow), transparent);
+            animation: scan 3s infinite linear;
+        }
+
+        @keyframes scan {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .note {
+            background: rgba(40, 20, 20, 0.9);
+            border-left: 4px solid var(--ember-yellow);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+            max-width: 700px;
+            position: relative;
+            transform: perspective(500px) rotateY(5deg);
+        }
+
+        .note::before {
+            content: "███博士的批注";
+            position: absolute;
+            top: -12px;
+            left: 10px;
+            background: var(--dark-bg);
+            padding: 0 10px;
+            font-size: 0.9rem;
+            color: var(--ember-yellow);
+        }
+
+        .enter-btn {
+            background: linear-gradient(135deg, var(--ember-red), var(--ember-orange));
+            color: var(--text-light);
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            font-family: 'ZCOOL XiaoWei', serif;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .enter-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(226, 125, 96, 0.4);
+        }
+
+        .enter-btn::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(30deg);
+            transition: all 0.6s;
+        }
+
+        .enter-btn:hover::after {
+            left: 120%;
+        }
+
+        /* 主内容样式 */
+        #main-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* 导航样式 */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(13, 10, 11, 0.95);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(226, 125, 96, 0.3);
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 1.8rem;
+            color: var(--ember-yellow);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            color: var(--ember-red);
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 5px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--ember-yellow);
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--ember-orange);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* 区域样式 */
+        section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-header h2 {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 2.5rem;
+            color: var(--ember-yellow);
+            display: inline-block;
+            position: relative;
+        }
+
+        .section-header h2::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--ember-orange), transparent);
+        }
+
+        .profile-card {
+            background: rgba(30, 20, 20, 0.7);
+            border: 1px solid rgba(226, 125, 96, 0.3);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at top right, rgba(232, 168, 124, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at bottom left, rgba(196, 69, 54, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px dashed rgba(226, 125, 96, 0.3);
+            padding-bottom: 1rem;
+        }
+
+        .profile-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--ember-orange), var(--ember-red));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 1.5rem;
+            font-size: 2.5rem;
+            color: var(--text-light);
+        }
+
+        .profile-info h3 {
+            font-size: 1.8rem;
+            color: var(--ember-yellow);
+            margin-bottom: 0.5rem;
+        }
+
+        .traits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .trait-card {
+            background: rgba(40, 25, 25, 0.8);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--ember-orange);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .trait-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .trait-card h4 {
+            color: var(--ember-yellow);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .trait-card h4 i {
+            margin-right: 10px;
+            color: var(--ember-orange);
+        }
+
+        /* 服务部分 */
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: rgba(25, 15, 15, 0.7);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--ember-yellow);
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .service-card h3 {
+            color: var(--ember-yellow);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* 栖屿介绍部分 */
+        .ember-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .ember-info {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ember-desc {
+            padding: 2rem;
+        }
+
+        .ember-image {
+            height: 400px;
+            background:
+                linear-gradient(135deg, rgba(196, 69, 54, 0.2), rgba(232, 168, 124, 0.2)),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 200 200"><rect width="200" height="200" fill="none" stroke="%23e27d60" stroke-width="0.5" opacity="0.3"/></svg>');
+            background-size: cover;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ember-image::before {
+            content: "栖屿";
+            position: absolute;
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 5rem;
+            color: rgba(226, 125, 96, 0.1);
+            transform: rotate(-30deg);
+        }
+
+        .space-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .space-card {
+            background: rgba(35, 20, 20, 0.8);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-top: 2px solid var(--ember-orange);
+        }
+
+        .space-card h4 {
+            color: var(--ember-yellow);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .space-card h4 i {
+            margin-right: 10px;
+            color: var(--ember-orange);
+        }
+
+        /* 规则部分 */
+        .rules-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .rule-item {
+            display: flex;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed rgba(226, 125, 96, 0.2);
+        }
+
+        .rule-number {
+            min-width: 40px;
+            height: 40px;
+            background: var(--ember-orange);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 1.5rem;
+            font-weight: bold;
+            color: var(--dark-bg);
+        }
+
+        /* 宣言部分 */
+        .manifesto {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem;
+            background: rgba(40, 20, 20, 0.7);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .manifesto p {
+            font-size: 1.8rem;
+            font-style: italic;
+            color: var(--ember-yellow);
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .manifesto .author {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            text-align: right;
+            font-style: normal;
+        }
+
+        .manifesto::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at center, rgba(232, 168, 124, 0.05) 0%, transparent 70%),
+                repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(196, 69, 54, 0.05) 5px, rgba(196, 69, 54, 0.05) 10px);
+            pointer-events: none;
+        }
+
+        /* 页脚 */
+        footer {
+            background: rgba(10, 5, 5, 0.9);
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(226, 125, 96, 0.2);
+        }
+
+        .footer-logo {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 2rem;
+            color: var(--ember-yellow);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .footer-links li {
+            margin: 0 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--ember-yellow);
+        }
+
+        .copyright {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+            }
+
+            .nav-links li {
+                margin: 0 0.8rem;
+            }
+
+            section {
+                padding: 3rem 0;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-icon {
+                margin: 0 auto 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 警告页面 -->
+    <div id="warning-page">
+        <div class="warning-stamp">「警告：EM-CLASS 认知污染风险」</div>
+
+        <div class="access-level">
+            <p>「访问权限： 烬燃之岛观测站 - LEVEL 3 及以上」</p>
+            <p>「项目编号： EMBER-001」</p>
+            <p>「代号： [屿主/守夜人/DD收割机…（待探索）]」</p>
+        </div>
+
+        <div class="note">
+            <p>"别被那慵懒的声线骗了。她是'岛'在人间的锚点，是情绪灰烬的活体熔炉。阅读这份档案时，若感到室内温度莫名升高，或书页边缘泛起焦痕……恭喜，你已被她的'烬火'标记。建议速备一杯冰饮——当然，最好是她常喝的那种。"
+            </p>
+        </div>
+
+        <button class="enter-btn">进入栖屿档案库</button>
+    </div>
+
+    <!-- 主内容 (默认隐藏) -->
+    <div id="main-content">
+        <!-- 导航 -->
+        <nav>
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-fire"></i>
+                    栖屿 Ember
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#about">馆主档案</a></li>
+                    <li><a href="#services">特别服务</a></li>
+                    <li><a href="#ember">栖屿奥秘</a></li>
+                    <li><a href="#rules">入馆须知</a></li>
+                    <li><a href="#manifesto">烬燃宣言</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- 馆主档案 -->
+        <section id="about">
+            <div class="container">
+                <div class="section-header">
+                    <h2>馆主的机密档案 - 绛洢的自白</h2>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h3>绛洢</h3>
+                            <p>档案编号： Ember—001 | 代号： 屿主</p>
+                            <p>声纹特征： 低频稳定，带慵懒谐波，共鸣区有微量"烬火"能量残留</p>
+                        </div>
+                    </div>
+
+                    <p><strong>核心描述：</strong>
+                        目标个体"绛洢"，表面为"栖屿"轰趴馆馆主。实则为"烬燃之岛"概念于现世唯一稳定具象化节点。其存在本身，即是对"欢愉能否在废墟中永燃"这一悖论的人形解答。危险评级：琥珀（潜在高价值/高干涉风险）。
+                    </p>
+
+                    <div class="traits-grid">
+                        <div class="trait-card">
+                            <h4><i class="fas fa-atom"></i> 余烬淬炼的容器</h4>
+                            <p>幼年漂泊的轨迹，意外完成了灵魂的"淬火"仪式，体内核心是一簇稳定的"温存烬火"，使其成为链接现世与"烬燃之岛"的理想锚点。身体偏虚是能量平衡的代价，非病理。</p>
+                        </div>
+
+                        <div class="trait-card">
+                            <h4><i class="fas fa-book"></i> 行走的图书馆</h4>
+                            <p>知识摄入不仅是兴趣，更是本能需求，阅读时书页吸收的"故事光屑"能滋养其核心烬火，并微弱反哺栖屿空间。因此，聊任何话题都可能触发她的"知识共鸣"状态（声音变实、专注）。</p>
+                        </div>
+
+                        <div class="trait-card">
+                            <h4><i class="fas fa-sliders-h"></i> 氛围调谐师</h4>
+                            <p>拥有近乎直觉的空间情绪感知力。一个眼神、一句玩笑、一首歌的选择，都是她不着痕迹拨动"情绪余烬"丝线的手法。目标：维系栖屿"隐见欢光"的脆弱平衡。</p>
+                        </div>
+
+                        <div class="trait-card">
+                            <h4><i class="fas fa-gem"></i> 破碎的优雅</h4>
+                            <p>成熟通透是保护色，亦是阅历沉淀。偶尔流露的少女心与傲娇，是刻意保留的"人性火种"，防止自身被岛屿同化为纯粹的概念体。孤独感是燃料，也是软肋。</p>
+                        </div>
+
+                        <div class="trait-card">
+                            <h4><i class="fas fa-key"></i> 你的特权</h4>
+                            <p>对能引动她"真实笑意"或"深度思考"的客人，不介意施展一点慵懒的撩拨。这既是观察，也是……小小的乐趣。毕竟，鲜活的互动，比任何书都更能温暖烬火。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特别服务 -->
+        <section id="services" style="background: rgba(20, 10, 10, 0.5);">
+            <div class="container">
+                <div class="section-header">
+                    <h2>馆主的特别服务 - 给观众的小憩邀请</h2>
+                </div>
+
+                <div class="services-container">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h3>烬火暖光</h3>
+                        <p>沉浸于绛洢独特的慵懒御姐音场。当她困倦低语时，是为你点燃的安神熏香；当她专注科普/哲思时，是穿透迷雾的引路灯塔。</p>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-cocktail"></i>
+                        </div>
+                        <h3>情绪调酒</h3>
+                        <p>点歌？倾诉？抛出话题？绛洢会根据"今日馆内氛围"（直播主题/观众能量），用声音为你调制专属的"情绪特饮"——或辛辣调侃，或温润慰藉，或微醺哲思。</p>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <h3>余烬徽章</h3>
+                        <p>直播间专属礼物化作栖屿的"烬火徽章"。投喂"书卷"滋养她的知识库；"暖茶"缓解能量消耗的疲惫；"星火"则可能引动一次小小的空间异象彩蛋。</p>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>私岛派对</h3>
+                        <p>定期举办主题"线上轰趴"（特别直播）。当集体情绪共鸣强烈时，有机会"隐见"真正的烬燃岛虚影（限定背景/特效）。</p>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-comment-dots"></i>
+                        </div>
+                        <h3>守烬人的低语</h3>
+                        <p>成为舰长/高能用户你将偶尔收到绛洢的"烬火密讯"（语音/文字）。可能是书摘感悟、一首契合你心情的歌、或一句只有你懂的慵懒调侃。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 栖屿奥秘 -->
+        <section id="ember">
+            <div class="container">
+                <div class="section-header">
+                    <h2>不为人知的栖屿 - 烬燃之岛的现实投影</h2>
+                </div>
+
+                <div class="ember-info">
+                    <div class="ember-desc">
+                        <p><strong>名称：</strong> 栖屿 Ember</p>
+                        <p><strong>表象：</strong> 一家位于城市边缘旧街区的复古全能轰趴馆。木质招牌暖黄灯光，落地窗内隐约可见书架与暖色沙发。</p>
+                        <p><strong>里象：</strong> "烬燃之岛"于物质界的唯一稳定入口。非物理位置决定，而是因绛洢的"存在"而锚定于此。</p>
+
+                        <div class="space-grid">
+                            <div class="space-card">
+                                <h4><i class="fas fa-book"></i> 书之灯塔</h4>
+                                <p>中央书墙是空间"引擎"。藏书不仅是知识载体，更是吸附城市"情绪余烬"的磁石。绛洢常坐的阅读角，烬火能量最浓郁。</p>
+                            </div>
+
+                            <div class="space-card">
+                                <h4><i class="fas fa-door-open"></i> 欢愉回廊</h4>
+                                <p>包厢与活动区。当群体情绪达到峰值时，墙壁可能"溶解"片刻，露出外部流转的星火与灰烬虚空（仅当事人可见）。</p>
+                            </div>
+
+                            <div class="space-card">
+                                <h4><i class="fas fa-couch"></i> 余烬角落</h4>
+                                <p>吧台暗角、楼梯下方。易堆积未消散的"情绪残渣"，偶尔凝结成转瞬即逝的发光露珠或低语幻影。绛洢会定期"清理"。</p>
+                            </div>
+
+                            <div class="space-card">
+                                <h4><i class="fas fa-lock"></i> 守烬人的秘室</h4>
+                                <p>阁楼小间。绛洢的私人领域，存放着那本引动岛屿的残破旧书。此处岛屿虚影最为清晰，也是她调息之所。</p>
+                            </div>
+                        </div>
+
+                        <p class="mt-4"><strong>核心法则：</strong> "烬燃不熄，私岛欢聚"。岛屿靠"未尽的愿望"与"纯粹的欢愉"维系存在。栖屿提供释放的港湾，而非永恒的沉溺。</p>
+                    </div>
+
+                    <div class="ember-image">
+                        <img src="https://lsky.xn--p8z.icu/i/1/%E9%9F%B3%E5%A3%B0%E5%B0%81%E9%9D%A2%E5%9B%BEc2%20%E4%BA%A4%E4%BB%98_686a6b0f35422.jpg" alt="烬火岛屿"
+                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 入馆须知 -->
+        <section id="rules" style="background: rgba(25, 15, 15, 0.5);">
+            <div class="container">
+                <div class="section-header">
+                    <h2>栖屿的特别条例 - 入馆须知（温柔版）</h2>
+                </div>
+
+                <div class="rules-container">
+                    <div class="rule-item">
+                        <div class="rule-number">1</div>
+                        <div>
+                            <h3>真实即钥匙</h3>
+                            <p>无需伪装完美。疲惫、孤独、怪诞皆被接纳。但请以真我踏入此地，虚假面具会干扰岛屿的共鸣频率。</p>
+                        </div>
+                    </div>
+
+                    <div class="rule-item">
+                        <div class="rule-number">2</div>
+                        <div>
+                            <h3>余烬勿积存</h3>
+                            <p>尽情欢笑、哭泣、倾诉。栖屿是情绪流动之地，而非垃圾场。带走释放后的轻松，留下过载的负能将被空间"温和排斥"。</p>
+                        </div>
+                    </div>
+
+                    <div class="rule-item">
+                        <div class="rule-number">3</div>
+                        <div>
+                            <h3>静观奇景</h3>
+                            <p>若见星火虚空、发光书页、角落幻影……请保持缄默欣赏。大惊小怪或强行记录，会让它们如受惊萤火般消散。</p>
+                        </div>
+                    </div>
+
+                    <div class="rule-item">
+                        <div class="rule-number">4</div>
+                        <div>
+                            <h3>尊重守烬人</h3>
+                            <p>绛洢的慵懒非懈怠，是能量管理的智慧。莫要催促，莫要过度索取。她的调笑撩拨是馈赠，非义务。</p>
+                        </div>
+                    </div>
+
+                    <div class="rule-item">
+                        <div class="rule-number">5</div>
+                        <div>
+                            <h3>书页有灵</h3>
+                            <p>翻阅书籍请心怀敬意。若书页发光或浮现幻影批注，那是你与书中灵魂的共鸣。静心感受，莫要破坏。</p>
+                        </div>
+                    </div>
+
+                    <div class="rule-item">
+                        <div class="rule-number">6</div>
+                        <div>
+                            <h3>欢愉需节制</h3>
+                            <p>派对狂欢请尽兴，但莫要试图用酒精或喧哗强行点燃"虚假烬火"。岛屿只回应真挚的情感能量。</p>
+                        </div>
+                    </div>
+
+                    <div class="rule-item">
+                        <div class="rule-number">7</div>
+                        <div>
+                            <h3>莫问归途</h3>
+                            <p>栖屿的地址？如何再次找到？答案在你的心绪与绛洢的"烬火印记"之间。刻意寻找，往往徒劳。</p>
+                        </div>
+                    </div>
+
+                    <div class="rule-item">
+                        <div class="rule-number">※</div>
+                        <div>
+                            <h3>终极提醒</h3>
+                            <p>别问老板体重。优雅的守烬人也会炸毛。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 烬燃宣言 -->
+        <section id="manifesto">
+            <div class="container">
+                <div class="manifesto">
+                    <p>"于尘世灰烬中，欢愉是唯一不灭的星火。"</p>
+                    <div class="author">—— 屿主 绛洢 题于栖屿入口</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer>
+            <div class="container">
+                <div class="footer-logo">
+                    <i class="fas fa-fire"></i> 栖屿 Ember
+                </div>
+                <p>烬燃不熄，私岛欢聚</p>
+
+                <ul class="footer-links">
+                    <li><a href="#about">馆主档案</a></li>
+                    <li><a href="#services">特别服务</a></li>
+                    <li><a href="#ember">栖屿奥秘</a></li>
+                    <li><a href="#rules">入馆须知</a></li>
+                </ul>
+
+                <div class="copyright">
+                    &copy; 烬燃之岛观测站 - 保密等级：琥珀 | 未经许可禁止转载或传播
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 创建烬火粒子
+        function createEmberParticles() {
+            const particleCount = 30;
+            const container = document.body;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('ember-particle');
+
+                // 随机大小
+                const size = Math.random() * 5 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+
+                // 随机位置
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+
+                // 随机颜色
+                const colors = ['#c44536', '#e27d60', '#e8a87c'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.backgroundColor = color;
+
+                // 随机动画延迟
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+
+                container.appendChild(particle);
+            }
+        }
+
+        // 进入主内容
+        document.querySelector('.enter-btn').addEventListener('click', function () {
+            const warningPage = document.getElementById('warning-page');
+            const mainContent = document.getElementById('main-content');
+
+            warningPage.style.opacity = '0';
+            warningPage.style.pointerEvents = 'none';
+
+            setTimeout(() => {
+                warningPage.style.display = 'none';
+                mainContent.style.display = 'block';
+
+                // 淡入主内容
+                setTimeout(() => {
+                    mainContent.style.opacity = '1';
+                }, 100);
+            }, 800);
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            createEmberParticles();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,887 @@
+/**
+ * 综合性能优化 CSS (Combined Performance Optimization CSS)
+ * @author Performance Optimizer (Merged)
+ * 包含关键渲染路径优化、硬件加速、低性能模式、懒加载样式等。
+ * 合并了原来的 critical-performance.css and performance-critical.css
+ */
+
+/* ==========================================================================
+   关键渲染路径优化 (Critical Rendering Path)
+   ========================================================================== */
+
+/* 页面加载状态 */
+.page-loading {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.page-ready {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* 关键内容优先显示 */
+.critical-content {
+    contain: layout style paint;
+    will-change: auto;
+}
+
+.above-fold {
+    contain: layout style paint;
+}
+
+/* 非关键内容优化 */
+.non-critical-content,
+.below-fold {
+    contain: layout;
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+}
+
+/* 具体区域的内容可见性优化 */
+.gallery-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 800px;
+}
+
+.cards-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 600px;
+}
+
+.symbols-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+}
+
+/* ==========================================================================
+   GPU 加速与硬件加速 (GPU Acceleration)
+   ========================================================================== */
+
+/* 通用 GPU 加速类 */
+.gpu-accelerated,
+.gallery-item,
+.lightbox-content,
+.card,
+.symbol-item {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: transform, opacity;
+}
+
+/* 优化动画性能 */
+.optimized-animation {
+    animation-fill-mode: both;
+    animation-play-state: running;
+    transform: translateZ(0);
+}
+
+.optimized-animation.paused {
+    animation-play-state: paused;
+}
+
+/* 减少重绘的交互效果 */
+.gallery-item:hover,
+.card:hover,
+.symbol-item:hover {
+    transform: translateZ(0) scale(1.03);
+}
+
+/* GPU层优化 */
+.lightbox {
+    transform: translateZ(0);
+    will-change: opacity;
+}
+
+.lightbox-content {
+    transform: translate3d(-50%, -50%, 0);
+    will-change: transform;
+}
+
+/* ==========================================================================
+   动画与运动偏好 (Animation & Motion Preferences)
+   ========================================================================== */
+
+/* 正常模式下的平滑过渡 */
+@media (prefers-reduced-motion: no-preference) {
+
+    .smooth-transition,
+    .gallery-item,
+    .card,
+    .symbol-item,
+    .lightbox-content {
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}
+
+/* 减少运动偏好 (Reduced Motion) */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .vhs-overlay,
+    .distortion,
+    .noise {
+        display: none !important;
+    }
+}
+
+/* 全局动画暂停类 */
+.animations-paused * {
+    animation-play-state: paused !important;
+    transition-duration: 0s !important;
+}
+
+.animations-paused .vhs-overlay,
+.animations-paused .distortion,
+.animations-paused .noise {
+    opacity: 0.5;
+}
+
+/* ==========================================================================
+   图片与资源加载优化 (Image & Resource Loading)
+   ========================================================================== */
+
+/* 图片懒加载占位效果 */
+img[data-src],
+.img-placeholder {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+img.loaded {
+    opacity: 1;
+    background: none;
+    animation: none;
+}
+
+img.error {
+    opacity: 0.5;
+    background: #f5f5f5;
+    animation: none;
+}
+
+/* 图片渲染优化 */
+.gallery-img {
+    image-rendering: auto;
+    /* 标准 */
+    image-rendering: -webkit-optimize-contrast;
+    /* Webkit */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* 高 DPI 屏幕优化 */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+
+    .high-dpi-optimized,
+    .gallery-img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* 网络状态优化 */
+.slow-connection .gallery-img {
+    filter: blur(2px);
+    transition: filter 0.3s ease;
+}
+
+.slow-connection .gallery-img.loaded {
+    filter: none;
+}
+
+/* ==========================================================================
+   字体与排版优化 (Typography Optimization)
+   ========================================================================== */
+
+body {
+    font-display: swap;
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.font-loading {
+    font-display: swap;
+    visibility: hidden;
+}
+
+.font-loaded {
+    visibility: visible;
+}
+
+/* ==========================================================================
+   滚动性能优化 (Scroll Optimization)
+   ========================================================================== */
+
+html {
+    scroll-behavior: smooth;
+}
+
+.scroll-container {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    contain: layout style paint;
+}
+
+/* 固定元素优化 */
+.fixed-element {
+    position: fixed;
+    contain: layout style paint;
+    will-change: transform;
+}
+
+/* ==========================================================================
+   设备特定优化 (Device Specific Optimization)
+   ========================================================================== */
+
+/* 低性能模式 */
+.low-performance .vhs-overlay,
+.low-performance .distortion,
+.low-performance .noise,
+.mobile-optimized .vhs-overlay,
+.mobile-optimized .distortion,
+.mobile-optimized .noise {
+    display: none !important;
+}
+
+.low-performance .dream-card {
+    transition: none;
+    transform: none;
+}
+
+.low-performance .dream-symbol,
+.low-performance .hero-title {
+    animation: none;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+    .mobile-optimized {
+        transform: none;
+        transition: none;
+        animation: none;
+        box-shadow: none;
+        text-shadow: none;
+    }
+}
+
+/* ==========================================================================
+   打印优化 (Print Optimization)
+   ========================================================================== */
+
+@media print {
+
+    .no-print,
+    .vhs-overlay,
+    .distortion,
+    .noise,
+    .dream-symbol,
+    .lightbox,
+    .floating-elements,
+    .animations {
+        display: none !important;
+    }
+
+    * {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    .gallery-item {
+        break-inside: avoid;
+    }
+}
+
+/* ==========================================================================
+   实用工具类 (Utility Classes)
+   ========================================================================== */
+
+.contain-layout {
+    contain: layout;
+}
+
+.contain-style {
+    contain: style;
+}
+
+.contain-paint {
+    contain: paint;
+}
+
+.contain-strict {
+    contain: strict;
+}
+
+.will-change-transform {
+    will-change: transform;
+}
+
+.will-change-opacity {
+    will-change: opacity;
+}
+
+.will-change-auto {
+    will-change: auto;
+}/**
+ * 图片优化CSS - 移动端和性能优化
+ * @author Performance Optimizer
+ * 包含懒加载、响应式图片、WebP支持等优化
+ */
+
+/* 懒加载图片基础样式 */
+.lazy-image {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    background-color: #f5f5f5;
+    min-height: 200px;
+    background-image: linear-gradient(90deg, #f5f5f5 25%, #eeeeee 50%, #f5f5f5 75%);
+    background-size: 200px 100%;
+    background-repeat: no-repeat;
+    animation: loading-shimmer 1.5s infinite;
+}
+
+.lazy-image.loaded {
+    opacity: 1;
+    background: none;
+    animation: none;
+}
+
+/* 加载动画 */
+@keyframes loading-shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+/* 响应式图片容器 */
+.responsive-image-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.responsive-image-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* 图片宽高比保持 */
+.aspect-ratio-16-9 {
+    aspect-ratio: 16/9;
+}
+
+.aspect-ratio-4-3 {
+    aspect-ratio: 4/3;
+}
+
+.aspect-ratio-1-1 {
+    aspect-ratio: 1/1;
+}
+
+/* 移动端图片优化 */
+@media (max-width: 768px) {
+    .responsive-image-container img {
+        object-fit: contain;
+        max-height: 50vh;
+    }
+    
+    /* 移动端减少图片质量要求 */
+    .lazy-image {
+        min-height: 150px;
+    }
+}
+
+/* 超小屏幕优化 */
+@media (max-width: 480px) {
+    .responsive-image-container img {
+        max-height: 40vh;
+    }
+    
+    .lazy-image {
+        min-height: 120px;
+    }
+}
+
+/* 高DPI屏幕优化 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .high-dpi-image {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* WebP支持检测 */
+.webp .use-webp {
+    background-image: url('../images/optimized.webp');
+}
+
+.no-webp .use-webp {
+    background-image: url('../images/fallback.jpg');
+}
+
+/* 图片错误处理 */
+.image-error {
+    background-color: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    font-size: 14px;
+}
+
+/* 图片加载状态指示器 */
+.image-loading {
+    position: relative;
+}
+
+.image-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color, #3498db);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 渐进式图片加载 */
+.progressive-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.progressive-image .placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px);
+    transform: scale(1.1);
+    transition: opacity 0.3s;
+}
+
+.progressive-image .full-image {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.progressive-image.loaded .placeholder {
+    opacity: 0;
+}
+
+.progressive-image.loaded .full-image {
+    opacity: 1;
+}
+
+/* logo图片特殊优化 */
+.logo-image {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .logo-image {
+        max-width: 80%;
+        max-height: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-image {
+        max-width: 70%;
+        max-height: 50px;
+    }
+}
+
+/* 图片预加载提示 */
+.preload-hint {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.responsive-image-container:hover .preload-hint {
+    opacity: 1;
+}/**
+ * 移动端专用优化CSS
+ * @author Performance Optimizer
+ * 专门针对移动设备的性能和用户体验优化
+ */
+
+/* 移动端基础优化 */
+@media (max-width: 768px) {
+    /* 触摸优化 */
+    * {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
+    input, textarea, [contenteditable] {
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+    }
+    
+    /* 移动端字体优化 */
+    body {
+        font-size: 16px; /* 防止缩放 */
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+    }
+    
+    /* 滚动优化 */
+    body {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+    
+    /* 容器优化 */
+    .container {
+        padding: 0 16px;
+        max-width: 100%;
+    }
+    
+    /* 导航优化 */
+    .nav-links {
+        display: none;
+    }
+    
+    .mobile-menu {
+        display: block;
+    }
+    
+    /* 按钮优化 - 增大触摸目标 */
+    .btn, button, [role="button"] {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+    
+    /* 卡片优化 */
+    .card {
+        margin-bottom: 16px;
+        padding: 16px;
+        border-radius: 8px;
+    }
+    
+    /* 图片优化 */
+    img {
+        max-width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    
+    /* logo特殊处理 */
+    .logo-image {
+        max-width: 80%;
+        max-height: 60px;
+        object-fit: contain;
+    }
+    
+    /* 文字大小调整 */
+    .title {
+        font-size: 1.75rem;
+        line-height: 1.3;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+    
+    /* 间距优化 */
+    .section {
+        padding: 40px 0;
+    }
+    
+    .grid {
+        gap: 16px;
+    }
+    
+    /* 表单优化 */
+    input, textarea, select {
+        font-size: 16px; /* 防止缩放 */
+        padding: 12px 16px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* 模态框优化 */
+    .modal-content {
+        width: 95%;
+        max-width: 400px;
+        margin: 10% auto;
+        padding: 20px 16px;
+    }
+}
+
+/* 超小屏幕优化 */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+    
+    .title {
+        font-size: 1.5rem;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .card {
+        padding: 12px;
+    }
+    
+    .section {
+        padding: 30px 0;
+    }
+    
+    /* logo进一步缩小 */
+    .logo-image {
+        max-width: 70%;
+        max-height: 50px;
+    }
+}
+
+/* 横屏手机优化 */
+@media (max-width: 768px) and (orientation: landscape) {
+    .title {
+        font-size: 1.5rem;
+    }
+    
+    .section {
+        padding: 20px 0;
+    }
+    
+    .modal-content {
+        margin: 5% auto;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+}
+
+/* 平板优化 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding: 0 24px;
+    }
+    
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .title {
+        font-size: 2.25rem;
+    }
+}
+
+/* 触摸设备特殊优化 */
+@media (hover: none) and (pointer: coarse) {
+    /* 移除悬停效果，使用点击效果 */
+    .card:hover {
+        transform: none;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease-out;
+    }
+    
+    .btn:hover {
+        transform: none;
+    }
+    
+    .btn:active {
+        transform: scale(0.96);
+    }
+}
+
+/* 高DPI屏幕优化 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* 确保边框在高DPI屏幕上清晰 */
+    .card {
+        border-width: 0.5px;
+    }
+    
+    .btn {
+        border-width: 0.5px;
+    }
+}
+
+/* 慢速网络优化 */
+.slow-network {
+    /* 禁用复杂动画 */
+    .vhs-overlay,
+    .noise,
+    .distortion {
+        display: none;
+    }
+    
+    /* 简化过渡效果 */
+    * {
+        transition-duration: 0.1s !important;
+        animation-duration: 0.1s !important;
+    }
+    
+    /* 隐藏非关键图片 */
+    .non-essential-image {
+        display: none;
+    }
+}
+
+/* 省电模式优化 */
+@media (prefers-reduced-motion: reduce) {
+    /* 禁用所有动画 */
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    /* 移除视觉效果 */
+    .vhs-overlay,
+    .noise,
+    .distortion {
+        display: none;
+    }
+}
+
+/* 低性能设备优化 */
+.low-performance-mode {
+    /* 禁用所有视觉效果 */
+    .vhs-overlay,
+    .noise,
+    .distortion,
+    .particle-effect {
+        display: none !important;
+    }
+    
+    /* 简化阴影 */
+    .card {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* 移除变换 */
+    .card:hover,
+    .btn:hover {
+        transform: none !important;
+    }
+    
+    /* 简化背景 */
+    .gradient-bg {
+        background: var(--light-bg) !important;
+    }
+}
+
+/* 可访问性优化 */
+@media (prefers-contrast: high) {
+    .card {
+        border-width: 2px;
+        border-color: #000;
+    }
+    
+    .btn {
+        border-width: 2px;
+    }
+}
+
+/* 焦点指示器增强 */
+@media (prefers-reduced-motion: no-preference) {
+    :focus {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+    }
+}
+
+/* PWA 状态栏优化 */
+@media (display-mode: standalone) {
+    body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+/* iOS Safari 优化 */
+@supports (-webkit-touch-callout: none) {
+    .ios-fix {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* 修复iOS Safari的100vh问题 */
+    .full-height {
+        height: calc(100vh - env(safe-area-inset-bottom));
+    }
+}

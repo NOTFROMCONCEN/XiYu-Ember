@@ -1,0 +1,10 @@
+{
+    "name": "meimo-workspace",
+    "private": true,
+    "scripts": {
+        "dev": "npm --prefix website_nodejs_meimo run dev",
+        "start": "npm --prefix website_nodejs_meimo start",
+        "build": "npm --prefix website_nodejs_meimo run build",
+        "test": "npm --prefix website_nodejs_meimo run test"
+    }
+}

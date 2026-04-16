@@ -1,0 +1,112 @@
+/**
+ * 主横幅区域样式
+ * @author Huameitang
+ * 这个文件定义了网站主横幅区域的所有样式
+ * 包括背景效果、标题动画、按钮样式等
+ * 采用视觉冲击力强的设计，营造神秘氛围
+ */
+
+/* 主横幅 */
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 5% 180px;
+    text-align: center;
+    position: relative;
+    min-height: 90vh;
+    background: url('https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+    background-attachment: fixed;
+    isolation: isolate;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(10, 5, 20, 0.7), rgba(5, 10, 30, 0.9));
+    z-index: -1;
+}
+
+.dream-title {
+    font-size: 5rem;
+    margin-bottom: 30px;
+    color: #d0b0ff;
+    text-shadow: 0 0 20px rgba(100, 50, 200, 0.5);
+    letter-spacing: -2px;
+    position: relative;
+    z-index: 2;
+    animation: title-distort 15s infinite;
+    font-weight: 300;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.ember-highlight {
+    color: #EF4444;
+    text-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+}
+
+@keyframes title-distort {
+    0%, 100% { transform: translate(0, 0) skew(0, 0); }
+    25% { transform: translate(2px, -1px) skew(-1deg, 0.5deg); }
+    50% { transform: translate(-3px, 1px) skew(1deg, -0.5deg); }
+    75% { transform: translate(1px, -2px) skew(-0.5deg, 1deg); }
+}
+
+.subtitle {
+    font-size: 1.8rem;
+    margin-bottom: 50px;
+    max-width: 700px;
+    color: #b8b8d6;
+    font-weight: 300;
+    line-height: 1.6;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 梦核按钮 */
+.dream-btn {
+    display: inline-block;
+    padding: 18px 45px;
+    background: rgba(40, 30, 60, 0.5);
+    color: #d0b0ff;
+    font-size: 1.3rem;
+    font-weight: 300;
+    text-decoration: none;
+    border-radius: 2px;
+    margin: 15px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(150, 100, 200, 0.5);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s;
+    z-index: 2;
+    backdrop-filter: blur(2px);
+}
+
+.dream-btn:hover {
+    background: rgba(60, 40, 100, 0.6);
+    box-shadow: 0 10px 30px rgba(100, 50, 200, 0.4);
+    border-color: #9a7fcc;
+}
+
+.dream-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(180, 150, 255, 0.3), transparent);
+    animation: btnShine 5s infinite;
+}
+
+@keyframes btnShine {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
