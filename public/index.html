@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!--
+    栖屿 Ember 轰趴馆 - 模块化主页面
+    @author Huameitang
+    这是网站的模块化主页面文件
+    采用组件化设计，将页面拆分为多个独立的模块
+    便于维护、扩展和团队协作开发
+    遵循SOLID原则，保持代码的可维护性和可扩展性
+-->
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- SEO 基础 Meta -->
+    <title>栖屿 Ember | 深藏不露的轰趴馆</title>
+    <meta name="description" content="栖屿 Ember 轰趴馆 - 一个深藏不露的私人聚会空间，提供轰趴、派对、团建等一站式娱乐体验。">
+    <meta name="keywords" content="轰趴馆,派对,团建,聚会,娱乐,轰趴,私人空间">
+    <meta name="author" content="Huameitang">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://qiyu-ember.com/">
+    <meta property="og:title" content="栖屿 Ember | 深藏不露的轰趴馆">
+    <meta property="og:description" content="栖屿 Ember 轰趴馆 - 一个深藏不露的私人聚会空间，提供轰趴、派对、团建等一站式娱乐体验。">
+    <meta property="og:image" content="/images/logo1.PNG">
+    <meta property="og:locale" content="zh_CN">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://qiyu-ember.com/">
+    <meta name="twitter:title" content="栖屿 Ember | 深藏不露的轰趴馆">
+    <meta name="twitter:description" content="栖屿 Ember 轰趴馆 - 一个深藏不露的私人聚会空间，提供轰趴、派对、团建等一站式娱乐体验。">
+    <meta name="twitter:image" content="/images/logo1.PNG">
+
+    <!-- 预连接外部域名 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="css/styles.css" as="style">
+    <link rel="preload" href="js/performance-config.js" as="script">
+    <link rel="preload" href="/images/logo1.PNG" as="image">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/logo1.PNG">
+    <link rel="apple-touch-icon" href="/images/logo1.PNG">
+
+    <!-- 外部字体和图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- 模块化CSS样式文件 -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/gallery.css">
+    <link rel="stylesheet" href="css/symbols.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/footer.css">
+
+    <!-- 性能优化CSS文件 -->
+    <link rel="stylesheet" href="css/advanced-performance.css">
+</head>
+
+<body>
+    <!-- 背景效果元素 -->
+    <div class="vhs-overlay"></div>
+    <div class="noise"></div>
+    <div class="distortion"></div>
+
+    <!-- 头部导航组件 -->
+    <div id="header-component"></div>
+
+    <!-- 主横幅组件 -->
+    <div id="hero-component"></div>
+
+    <!-- 功能卡片组件 -->
+    <div id="cards-component"></div>
+
+    <!-- 画廊组件 -->
+    <div id="gallery-component"></div>
+
+    <!-- 符号库组件 -->
+    <div id="symbols-component"></div>
+
+
+
+    <!-- 关于区域组件 -->
+    <div id="about-component"></div>
+
+    <!-- 页脚组件 -->
+    <div id="footer-component"></div>
+
+    <!-- 悬浮按钮组件 -->
+    <div id="floating-button-component"></div>
+
+    <!--
+        脚本加载策略：
+        - performance-config.js: 阻塞加载（关键配置，后续脚本依赖）
+        - 其余脚本: defer（不阻塞 HTML 解析，按顺序在 DOMContentLoaded 前执行）
+    -->
+    <script src="js/performance-config.js"></script>
+    <script defer src="js/scroll-optimizer.js"></script>
+    <script defer src="js/performance-monitor.js"></script>
+    <script defer type="module" src="js/performance-optimizer.js"></script>
+    <script defer src="js/advanced-performance-optimizer.js"></script>
+    <script defer src="js/resource-optimizer.js"></script>
+    <script defer src="js/smart-cache-manager.js"></script>
+    <script defer type="module" src="js/effects.js"></script>
+    <script defer type="module" src="js/interactions.js"></script>
+    <script defer src="js/app-bootstrap.js"></script>
+</body>
+
+</html>
