@@ -3,9 +3,8 @@ const express = require('express');
 
 function createStaticFilesMiddleware(publicDir) {
     return express.static(publicDir, {
-        etag: true,
+        etag: 'weak',
         lastModified: true,
-        weak: true,
         setHeaders: (res, filePath, stat) => {
             const ext = path.extname(filePath).toLowerCase();
 
