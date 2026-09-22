@@ -1,6 +1,6 @@
 const path = require('path');
 
-const ROOT_DIR = path.join(__dirname, '..');
+const ROOT_DIR = path.resolve(__dirname, '..', '..');
 const PUBLIC_DIR = path.join(ROOT_DIR, 'public');
 
 // 从环境变量读取配置，提供合理的默认值

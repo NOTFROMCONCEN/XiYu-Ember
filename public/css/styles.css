@@ -134,21 +134,25 @@ body>* {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #ff00ff;
+    background: rgba(255, 255, 255, 0.15);
     color: white;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 50px;
     padding: 15px 25px;
     font-size: 16px;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     z-index: 9999;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .floating-btn:hover {
-    background-color: #cc00cc;
+    background: rgba(255, 255, 255, 0.25);
     transform: scale(1.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 /* 对话框样式 */
@@ -165,16 +169,18 @@ body>* {
 }
 
 .modal-content {
-    background-color: #1a1a1a;
+    background: rgba(30, 30, 30, 0.65);
     color: #fff;
-    margin: 15% auto; 
+    margin: 15% auto;
     padding: 20px;
-    border: 1px solid #888;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     width: 80%;
     max-width: 500px;
     text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 .close-btn {
@@ -196,22 +202,204 @@ body>* {
 }
 
 .modal-btn {
-    background-color: #ff00ff;
+    background: rgba(255, 0, 255, 0.7);
     color: white;
     padding: 10px 20px;
     margin: 10px;
-    border: none;
-    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
-    transition: background-color 0.3s;
+    transition: background 0.3s, transform 0.2s;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 .modal-btn:hover {
-    background-color: #cc00cc;
+    background: rgba(204, 0, 204, 0.85);
+    transform: translateY(-2px);
 }
 
+/* 左下角社交按钮组 */
+.social-float-left {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    gap: 12px;
+    z-index: 9998;
+}
+
+.social-float-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.social-float-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.social-float-btn.douyin {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.social-float-btn.douyin:hover {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.social-float-btn.bilibili {
+    background: rgba(251, 114, 153, 0.25);
+    border-color: rgba(251, 114, 153, 0.4);
+}
+
+.social-float-btn.bilibili:hover {
+    background: rgba(251, 114, 153, 0.45);
+}
+
+/* 荣誉展示区域 */
+.honor-section {
+    padding: 100px 5%;
+    background: linear-gradient(180deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.honor-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 0, 255, 0.3), transparent);
+}
+
+.honor-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.honor-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.8em;
+    color: #ff6b6b;
+    margin-bottom: 16px;
+    text-shadow: 0 0 30px rgba(255, 107, 107, 0.4);
+}
+
+.honor-subtitle {
+    color: #888;
+    font-size: 1.1em;
+    margin-bottom: 60px;
+    font-family: 'Noto Sans SC', sans-serif;
+}
+
+.honor-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.honor-card {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 40px 24px;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.honor-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6b6b, #ff00ff);
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+
+.honor-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 0, 255, 0.2);
+}
+
+.honor-card:hover::before {
+    opacity: 1;
+}
+
+.honor-number {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.8em;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ff6b6b, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+}
+
+.honor-label {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 1.1em;
+    color: #e0e0e0;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.honor-desc {
+    font-size: 0.9em;
+    color: #888;
+}
+
+@media (max-width: 1024px) {
+    .honor-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .honor-title {
+        font-size: 2.2em;
+    }
+}
+
+@media (max-width: 768px) {
+    .honor-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .honor-title {
+        font-size: 1.8em;
+    }
+
+    .honor-section {
+        padding: 60px 5%;
+    }
+}
 
 /* 媒体查询：响应式设计 */
 @media (max-width: 1024px) {

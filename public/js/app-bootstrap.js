@@ -113,8 +113,7 @@ async function loadComponentsSequentially() {
     const components = [
         { name: 'header', url: 'components/header.html', priority: 'high' },
         { name: 'hero', url: 'components/hero.html', priority: 'high' },
-        { name: 'gallery', url: 'components/gallery.html', priority: 'medium' },
-        { name: 'symbols', url: 'components/symbols.html', priority: 'low' },
+        { name: 'honor', url: 'components/honor.html', priority: 'medium' },
         { name: 'footer', url: 'components/footer.html', priority: 'low' }
     ];
 
@@ -174,8 +173,7 @@ async function loadComponentsInParallel() {
     const components = [
         { name: 'header', url: 'components/header.html', priority: 'critical' },
         { name: 'hero', url: 'components/hero.html', priority: 'critical' },
-        { name: 'gallery', url: 'components/gallery.html', priority: 'important' },
-        { name: 'symbols', url: 'components/symbols.html', priority: 'normal' },
+        { name: 'honor', url: 'components/honor.html', priority: 'important' },
         { name: 'footer', url: 'components/footer.html', priority: 'normal' }
     ];
 
